@@ -8,7 +8,11 @@
     "electron": "electron ."
   },
   "devDependencies": {
-    "electron": "~1.6.2"
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "babel-plugin-import": "^1.11.0",
+    "css-loader": "^2.1.0",
+    "electron": "~1.6.2",
+    "style-loader": "^0.23.1"
   },
   "dependencies": {
     "antd": "^3.13.6",
@@ -16,6 +20,7 @@
     "babel-loader": "^6.4.1",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-1": "^6.22.0",
     "electron-localshortcut": "^1.1.1",
     "react": "^15.4.2",
