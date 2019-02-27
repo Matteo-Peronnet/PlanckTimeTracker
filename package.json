@@ -12,6 +12,7 @@
     "babel-plugin-import": "^1.11.0",
     "css-loader": "^2.1.0",
     "electron": "~1.6.2",
+    "electron-devtools-installer": "^2.2.4",
     "style-loader": "^0.23.1"
   },
   "dependencies": {

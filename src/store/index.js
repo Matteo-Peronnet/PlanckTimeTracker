@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createEpicMiddleware } from 'redux-observable'
 import { routerMiddleware } from 'react-router-redux'
+import reduxCasesMiddleware from './middleware/reduxCasesMiddleware'
 import createHistory from 'history/createBrowserHistory'
 import { reducer, epic } from './ducks'
 import { initApp } from './ducks/app'
@@ -14,6 +15,7 @@ const epicMiddleware = createEpicMiddleware();
 
 const middleware = composeWithDevTools(
     applyMiddleware(epicMiddleware),
+    applyMiddleware(reduxCasesMiddleware()),
     applyMiddleware(routerMiddleware(history)),
 )
 

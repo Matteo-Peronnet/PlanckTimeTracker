@@ -13,7 +13,7 @@ class MainWindow extends BrowserWindow {
         });
 
         this.loadURL(url);
-        this.on('blur', this.onBlur.bind(this));
+        process.env.NODE_ENV === "production" && (this.on('blur', this.onBlur.bind(this)))
     }
 
     onBlur() {
