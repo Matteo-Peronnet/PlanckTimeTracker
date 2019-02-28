@@ -1,7 +1,7 @@
 
 export function getCustomers() {
     return {
-        url: `https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=1000ms`,
+        url: `http://127.0.0.1:8000/app_dev.php/api/time/tracker/customers`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',

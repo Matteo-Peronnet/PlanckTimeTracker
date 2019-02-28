@@ -15,6 +15,11 @@ const INITIAL_STATE = {
 // Reducer
 export function reducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
+        case GET_CUSTOMER_SUCCESS:
+            return {
+                ...state,
+                list: action.result
+            }
         default:
             return state
     }

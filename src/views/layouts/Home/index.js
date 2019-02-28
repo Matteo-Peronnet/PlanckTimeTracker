@@ -2,58 +2,62 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { getCustomersRequest } from '../../../store/ducks/customer'
-import { Menu, Icon } from 'antd';
-
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+import { Menu, Dropdown, Avatar, Icon } from 'antd';
 
 
 @asyncConnect([
     {
         promise: ({ store: { dispatch, getState } }) => {
             const promises = [];
-            const { customer } = getState();
-            promises.push(dispatch(getCustomersRequest()));
+            const { customer: {list: list} } = getState();
+
+            if(list.length === 0) {
+                promises.push(dispatch(getCustomersRequest()));
+            }
             return Promise.all(promises);
         },
     },
 ])
 @connect(
     state => ({
+        customers: state.customer.list
     }),
     dispatch => ({
     }),
 )
 class Home extends React.Component {
 
-    state = {
-        current: 'mail',
-    }
-
-    handleClick = (e) => {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
-    }
+    customerMenuProject = (customer) =>
+        (
+            <Menu>
+            {
+                customer.projects.map((project, key) =>
+                    <Menu.Item key={key}>
+                        {project.name}
+                    </Menu.Item>
+                )
+            }
+            </Menu>
+        )
 
     render() {
+        const { customers } = this.props;
+
         return (
-            <Menu
-                onClick={this.handleClick}
-                selectedKeys={[this.state.current]}
-                mode="horizontal"
-            >
-                <Menu.Item key="client" style={{width: `40%`, textAlign: 'center'}}>
-                    <Icon type="team" /> Clients
-                </Menu.Item>
-                <Menu.Item key="app" style={{width: `40%`, textAlign: 'center'}}>
-                    <Icon type="dashboard" /> Timer
-                </Menu.Item>
-                <Menu.Item key="settings" style={{width: `20%`, textAlign: 'center'}}>
-                    <Icon type="tool" />
-                </Menu.Item>
-            </Menu>
+            <div className={"flex flex-auto flex-row flex-wrap items-center justify-center pa1"}>
+                {
+                    customers.map((customer) =>
+                        <Dropdown overlay={this.customerMenuProject(customer)} trigger="click">
+                        <Avatar
+                            style={{margin: "5px", cursor: 'pointer', border: '1px solid #ebedf0'}}
+                            key={customer.id}
+                            src={`https://planck.troopers.agency/uploads/customers/logo/${customer.logo}`}
+                            shape="square" size={70}
+                        />
+                        </Dropdown>
+                    )
+                }
+            </div>
         );
     }
 }
