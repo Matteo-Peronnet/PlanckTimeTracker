@@ -32,7 +32,11 @@ module.exports = {
                     presets: ['react','es2015','stage-0']
                 }
             },
-            { test: /\.css$/, loader: "style-loader!css-loader" }
+            { test: /\.css$/, loader: "style-loader!css-loader" },
+            {
+                test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
+                use: 'url-loader'
+            }
         ],
         loaders: [
             {

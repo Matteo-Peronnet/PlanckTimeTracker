@@ -13,7 +13,8 @@
     "css-loader": "^2.1.0",
     "electron": "~1.6.2",
     "electron-devtools-installer": "^2.2.4",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2"
   },
   "dependencies": {
     "antd": "^3.13.6",

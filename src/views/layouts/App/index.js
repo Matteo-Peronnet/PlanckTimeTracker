@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
-
+import Header from '../../../components/Header'
 export default class App extends Component {
+
     static propTypes = {
     };
 
@@ -14,7 +15,7 @@ export default class App extends Component {
         const { route } = this.props;
         return (
             <div>
-                <h1>HEADER</h1>
+                <Header/>
                 {renderRoutes(route.routes)}
             </div>
         );
