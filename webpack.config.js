@@ -29,7 +29,12 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
-                    presets: ['react','es2015','stage-0']
+                    presets: ['react','es2015','stage-0'],
+                    plugins: [
+                        "transform-decorators-legacy", "transform-decorators",
+                        "transform-class-properties",
+                        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }] // `style: true` for less
+                    ]
                 }
             },
             { test: /\.css$/, loader: "style-loader!css-loader" },

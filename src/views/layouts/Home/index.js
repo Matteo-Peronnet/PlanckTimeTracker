@@ -1,11 +1,30 @@
 import React, { Component } from "react";
-
+import { connect } from 'react-redux';
+import { asyncConnect } from 'redux-connect';
+import { getCustomersRequest } from '../../../store/ducks/customer'
 import { Menu, Icon } from 'antd';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
-export default class Home extends React.Component {
+
+@asyncConnect([
+    {
+        promise: ({ store: { dispatch, getState } }) => {
+            const promises = [];
+            const { customer } = getState();
+            promises.push(dispatch(getCustomersRequest()));
+            return Promise.all(promises);
+        },
+    },
+])
+@connect(
+    state => ({
+    }),
+    dispatch => ({
+    }),
+)
+class Home extends React.Component {
 
     state = {
         current: 'mail',
@@ -38,3 +57,5 @@ export default class Home extends React.Component {
         );
     }
 }
+
+export default Home
