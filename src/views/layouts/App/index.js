@@ -1,42 +1,22 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderRoutes } from 'react-router-config';
 
-import { Menu, Icon } from 'antd';
+export default class App extends Component {
+    static propTypes = {
+    };
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
+    componentDidMount() {}
 
-
-
-export default class App extends React.Component {
-
-    state = {
-        current: 'mail',
-    }
-
-    handleClick = (e) => {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
-    }
+    componentDidUpdate(prevProps) {}
 
     render() {
+        const { route } = this.props;
         return (
-            <Menu
-                onClick={this.handleClick}
-                selectedKeys={[this.state.current]}
-                mode="horizontal"
-            >
-                <Menu.Item key="client" style={{width: `40%`, textAlign: 'center'}}>
-                    <Icon type="team" /> Clients
-                </Menu.Item>
-                <Menu.Item key="app" style={{width: `40%`, textAlign: 'center'}}>
-                    <Icon type="dashboard" /> Timer
-                </Menu.Item>
-                <Menu.Item key="settings" style={{width: `20%`, textAlign: 'center'}}>
-                    <Icon type="tool" />
-                </Menu.Item>
-            </Menu>
+            <div>
+                <h1>HEADER</h1>
+                {renderRoutes(route.routes)}
+            </div>
         );
     }
 }

@@ -1,13 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider as ReduxProvider } from 'react-redux'
-import App from "./views/layouts/App";
 import 'antd/dist/antd.css';
-import store, { history } from './store'
-
+import { Provider as ReduxProvider } from 'react-redux'
+import { HashRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
+import { ReduxAsyncConnect } from 'redux-connect';
+import store from './store'
+import routes from './routes';
 
 ReactDOM.render(
     <ReduxProvider store={store}>
-        <App />
-    </ReduxProvider>
-    , document.getElementById("root"));
+        <HashRouter>
+            <ReduxAsyncConnect routes={routes} store={store}>
+                {renderRoutes(routes)}
+            </ReduxAsyncConnect>
+        </HashRouter>
+    </ReduxProvider>, document.getElementById("root"));

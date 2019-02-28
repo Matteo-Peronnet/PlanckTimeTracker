@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createEpicMiddleware } from 'redux-observable'
-import { routerMiddleware } from 'react-router-redux'
+import { routerMiddleware, push } from 'react-router-redux'
 import reduxCasesMiddleware from './middleware/reduxCasesMiddleware'
 import createHistory from 'history/createBrowserHistory'
 import { reducer, epic } from './ducks'
@@ -32,6 +32,7 @@ if (hooks.after) {
 const store = createStore(reducer, middleware)
 
 store.dispatch(initApp())
+
 
 epicMiddleware.run(epic)
 
