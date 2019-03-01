@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from '../assets/planck_header_logo.png';
-import { Icon } from 'antd';
+import { Icon, Affix } from 'antd';
 
 export default () => {
     return (

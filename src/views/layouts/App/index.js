@@ -22,7 +22,7 @@ export default class App extends Component {
     render() {
         const { route, loaded } = this.props;
         return (
-            <div className="vh-100 flex flex-column">
+            <div className="vh-100 flex flex-column flex-auto">
             <Header/>
             {
             loaded ?

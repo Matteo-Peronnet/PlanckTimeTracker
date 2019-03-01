@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax'
 import { getCustomers } from '../services/customer';
-import { tap, map, concat, flatMap, mergeMap, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 
 
 const GET_CUSTOMER_REQUEST = 'customer/GET_CUSTOMER_REQUEST';
