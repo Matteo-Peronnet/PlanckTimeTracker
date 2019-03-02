@@ -5,7 +5,7 @@ class MainWindow extends BrowserWindow {
     constructor(url) {
         super({
             height: 500,
-            width: 300,
+            width: 350,
             frame: false,
             resizable: false,
             show: false,

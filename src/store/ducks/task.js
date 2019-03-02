@@ -30,10 +30,9 @@ export function getProjectRequest(id) {
         types: [GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE],
         promise: (getState) => ajax(getProject(id)).pipe(
             map((res) => {
-                res.response['projectId'] = id
-                return res.response
+                return { projectId: id, ...res.response}
             }),
-            catchError((error) => error),
+            catchError((error) => Promise.reject(error)),
         ).toPromise()
     }
 }

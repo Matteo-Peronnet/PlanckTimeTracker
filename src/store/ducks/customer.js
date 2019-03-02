@@ -31,7 +31,7 @@ export function getCustomersRequest() {
         types: [GET_CUSTOMER_REQUEST, GET_CUSTOMER_SUCCESS, GET_CUSTOMER_FAILURE],
         promise: (getState) => ajax(getCustomers()).pipe(
             map((res) => res.response),
-            catchError((error) => error),
+            catchError((error) => Promise.reject(error)),
         ).toPromise()
     }
 }
