@@ -5,6 +5,8 @@ import { asyncConnect } from 'redux-connect';
 import {Tabs, Icon, Empty, Select} from 'antd';
 import { getCustomerRequest } from "../../../store/ducks/customer";
 import { getProjectRequest } from "../../../store/ducks/task";
+import { getCustomerById } from "../../../store/selectors/customer";
+import { getProjectById, getProjectName } from "../../../store/selectors/project";
 import TaskList from '../../../components/TaskList'
 import UserStory from '../../../components/UserStory'
 
@@ -37,13 +39,11 @@ const TabPane = Tabs.TabPane;
 ])
 @connect(
     (state, {match: {params: {customerId, projectId}}}) => {
-        const project = state.task.list.find((project) => project.projectId === parseInt(projectId));
-        const projectName = state.customer.list.find((customer) => customer.id === parseInt(customerId))
-            .projects.find((project) => project.id === parseInt(projectId)).name;
-        const customer = state.customer.list.find((customer) => customer.id === parseInt(customerId));
+        const customer = getCustomerById(state, customerId);
+        const project = getProjectById(state, projectId);
         return ({
             customer,
-            projectName,
+            projectName: getProjectName(customer, projectId),
             tma: project.tma,
             tasks: project.tasks,
             sprints: project.sprints

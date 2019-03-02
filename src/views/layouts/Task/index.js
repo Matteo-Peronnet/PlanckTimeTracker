@@ -34,8 +34,9 @@ import {getCustomerRequest} from "../../../store/ducks/customer";
     },
 ])
 @connect(
-    state => ({
-    }),
+    (state, {match: {params: {customerId, projectId, taskType, taskId}}}) => {
+
+    },
     dispatch => ({
     }),
 )
