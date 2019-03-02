@@ -1,14 +1,12 @@
 import React from "react";
+import { withRouter } from "react-router";
 import { Collapse, Table, Avatar } from 'antd';
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Tag from './Tag'
 const Panel = Collapse.Panel;
 
-function callback(key) {
-    console.log(key);
-}
-
-const columns = [
+const columns = (customerId, projectId) => ([
     {
         title: 'Asigned',
         dataIndex: 'assignedTo',
@@ -29,7 +27,15 @@ const columns = [
         dataIndex: 'title',
         key: 'title',
         render:
-            text => <a href="javascript:;">{text}</a>,
+            (text, record) =>
+            {
+                return <Link
+                    to={`/customer/${customerId}/project/${projectId}/task/${record.uid.uid}`}
+                    style={{ cursor: "pointer" }}
+                >
+                    {text}
+                </Link>
+            }
         },
     {
         title: 'Status',
@@ -41,11 +47,11 @@ const columns = [
             </span>
         ),
     }
-];
+]);
 
 export const TaskList = (props) => {
 
-    const { tasks } = props;
+    const { tasks, match: {params: {customerId, projectId}} } = props;
 
     const todo = tasks.filter((task) => task.status === 'todo');
     const wip = tasks.filter((task) => task.status === 'wip');
@@ -53,10 +59,10 @@ export const TaskList = (props) => {
     const done = tasks.filter((task) => task.status === 'done');
 
     return (
-        <Collapse bordered={false} onChange={callback}>
+        <Collapse bordered={false}>
             <Panel header="TODO" key="1" disabled={todo.length === 0}>
                 <Table
-                    columns={columns}
+                    columns={columns(customerId, projectId)}
                     dataSource={todo}
                     bordered={false}
                     showHeader={false}
@@ -65,7 +71,7 @@ export const TaskList = (props) => {
             </Panel>
             <Panel header="WIP" key="2" disabled={wip.length === 0}>
                 <Table
-                    columns={columns}
+                    columns={columns(customerId, projectId)}
                     dataSource={wip}
                     bordered={false}
                     showHeader={false}
@@ -74,7 +80,7 @@ export const TaskList = (props) => {
             </Panel>
             <Panel header="PR" key="3" disabled={pr.length === 0}>
                 <Table
-                    columns={columns}
+                    columns={columns(customerId, projectId)}
                     dataSource={pr}
                     bordered={false}
                     showHeader={false}
@@ -83,7 +89,7 @@ export const TaskList = (props) => {
             </Panel>
             <Panel header="DONE" key="4" disabled={done.length === 0}>
                 <Table
-                    columns={columns}
+                    columns={columns(customerId, projectId)}
                     dataSource={done}
                     bordered={false}
                     showHeader={false}
@@ -96,6 +102,9 @@ export const TaskList = (props) => {
 
 TaskList.propTypes = {
     tasks: PropTypes.array.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 };
 
-export default TaskList;
+export default withRouter(TaskList);
