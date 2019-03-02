@@ -19,7 +19,7 @@ const routes = [
                 exact: true,
             },
             {
-                path: '/customer/:customerId/project/:projectId/task/:taskId',
+                path: '/customer/:customerId/project/:projectId/task/:taskType/:taskId',
                 component: Task,
                 exact: true,
             }

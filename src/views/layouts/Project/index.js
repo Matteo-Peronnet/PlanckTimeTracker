@@ -13,7 +13,7 @@ const TabPane = Tabs.TabPane;
 
 @asyncConnect([
     {
-        promise: ({ store: { dispatch, getState }, match: { params: {customerId: customerId, projectId: projectId} } }) => {
+        promise: ({ store: { dispatch, getState }, match: { params: {customerId, projectId} } }) => {
             const promises = [];
             customerId = parseInt(customerId);
             projectId = parseInt(projectId);
@@ -36,12 +36,16 @@ const TabPane = Tabs.TabPane;
     },
 ])
 @connect(
-    (state, {match: {params: {customerId: customerId, projectId: id}}}) => ({
-        customer: state.customer.list.find((customer) => customer.id === parseInt(customerId)),
-        tma: state.task.list.find((project) => project.projectId === parseInt(id)).tma,
-        tasks: state.task.list.find((project) => project.projectId === parseInt(id)).tasks,
-        sprints: state.task.list.find((project) => project.projectId === parseInt(id)).sprints
-    }),
+    (state, {match: {params: {customerId, projectId}}}) => {
+        const project = state.task.list.find((project) => project.projectId === parseInt(projectId));
+        const customer = state.customer.list.find((customer) => customer.id === parseInt(customerId));
+        return ({
+            customer,
+            tma: project.tma,
+            tasks: project.tasks,
+            sprints: project.sprints
+        })
+    },
     dispatch => ({
     }),
 )
@@ -69,7 +73,7 @@ class Project extends React.Component {
 
         return (
             <div className="overflow-y-scroll">
-            <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy">
+            <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy bb b--black-05" style={{backgroundColor: '#f2f4f5'}}>
                 { customer.name }
             </p>
             <Tabs tabBarStyle={{display: 'flex', alignItems:'center', justifyContent:'center', flex: 1}} defaultActiveKey="1">
@@ -97,7 +101,7 @@ class Project extends React.Component {
                         (tasks.length === 0) ?
                             (<Empty description="Il n'y a pas de tickets"/>)
                             :
-                            <TaskList tasks={tasks} />
+                            <TaskList taskType="tasks" tasks={tasks} />
                     }
                 </TabPane>
                 <TabPane tab={<Icon type="hdd" theme="filled" style={{ fontSize: '28px', color: '#3d324c' }} />} key="3">
@@ -105,7 +109,7 @@ class Project extends React.Component {
                         (tasks.length === 0) ?
                             (<Empty description="Il n'y a pas de tickets"/>)
                             :
-                            <TaskList tasks={tma} />
+                            <TaskList taskType="tma" tasks={tma} />
                     }
                 </TabPane>
             </Tabs>

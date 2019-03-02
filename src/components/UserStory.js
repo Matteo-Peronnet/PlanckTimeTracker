@@ -39,7 +39,7 @@ export const UserStory = (props) => {
                             (userStorie.tasks.length === 0) ?
                                 (<Empty description="Il n'y a pas de tickets"/>)
                                 :
-                                <TaskList tasks={userStorie.tasks }/>
+                                <TaskList taskType="sprint" tasks={userStorie.tasks}/>
                         }
                     </Panel>
                 )}
