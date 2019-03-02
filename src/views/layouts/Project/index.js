@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 
 import {Tabs, Icon, Empty, Select} from 'antd';
-import {getProjectRequest} from "../../../store/ducks/task";
+import { getCustomerRequest } from "../../../store/ducks/customer";
+import { getProjectRequest } from "../../../store/ducks/task";
 import TaskList from '../../../components/TaskList'
 import UserStory from '../../../components/UserStory'
 
@@ -14,13 +15,20 @@ const TabPane = Tabs.TabPane;
     {
         promise: ({ store: { dispatch, getState }, match: { params: {customerId: customerId, projectId: projectId} } }) => {
             const promises = [];
-            const { task: {list: list} } = getState();
+            customerId = parseInt(customerId);
             projectId = parseInt(projectId);
 
-            const tasks = list.find((project) => project.projectId === projectId)
+            const { task: {list: taskList}, customer: {list: customerList} } = getState();
+
+            const tasks = taskList.find((project) => project.projectId === projectId)
+            const customer = customerList.find((customer) => customer.id === customerId)
 
             if(!tasks) {
                 promises.push(dispatch(getProjectRequest(projectId)));
+            }
+
+            if (!customer) {
+                promises.push(dispatch(getCustomerRequest(customerId)));
             }
 
             return Promise.all(promises);
@@ -28,7 +36,8 @@ const TabPane = Tabs.TabPane;
     },
 ])
 @connect(
-    (state, {match: {params: {projectId: id}}}) => ({
+    (state, {match: {params: {customerId: customerId, projectId: id}}}) => ({
+        customer: state.customer.list.find((customer) => customer.id === parseInt(customerId)),
         tma: state.task.list.find((project) => project.projectId === parseInt(id)).tma,
         tasks: state.task.list.find((project) => project.projectId === parseInt(id)).tasks,
         sprints: state.task.list.find((project) => project.projectId === parseInt(id)).sprints
@@ -55,12 +64,14 @@ class Project extends React.Component {
     }
 
     render() {
-        const { tma, tasks, sprints } = this.props
+        const { tma, tasks, sprints, customer } = this.props
         const { selectedSprint } = this.state
 
         return (
             <div className="overflow-y-scroll">
-
+            <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy">
+                { customer.name }
+            </p>
             <Tabs tabBarStyle={{display: 'flex', alignItems:'center', justifyContent:'center', flex: 1}} defaultActiveKey="1">
                 <TabPane tab={<Icon type="interation" theme="filled" style={{fontSize: '28px', color: '#3d324c' }} />} key="1">
                     {

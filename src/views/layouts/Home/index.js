@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
             const promises = [];
             const { customer: {list: list} } = getState();
 
-            if(list.length === 0) {
+            if(list.length === 0 || list.length === 1) {
                 promises.push(dispatch(getCustomersRequest()));
             }
             return Promise.all(promises);
