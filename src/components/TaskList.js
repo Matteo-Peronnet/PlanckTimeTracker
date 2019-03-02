@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapse, Table, Divider } from 'antd';
+import { Collapse, Table, Avatar } from 'antd';
 import PropTypes from 'prop-types';
 import Tag from './Tag'
 const Panel = Collapse.Panel;
@@ -8,21 +8,40 @@ function callback(key) {
     console.log(key);
 }
 
-const columns = [{
-    title: 'Title',
-    dataIndex: 'title',
-    key: 'title',
-    render: text => <a href="javascript:;">{text}</a>,
-}, {
-    title: 'Status',
-    key: 'status',
-    dataIndex: 'status',
-    render: tag => (
-        <span>
-            <Tag tag={tag}/>
-        </span>
-    ),
-}];
+const columns = [
+    {
+        title: 'Asigned',
+        dataIndex: 'assignedTo',
+        key: 'asigned',
+        render:
+            asigned => asigned ?
+                <Avatar
+                    shape="square"
+                    size="large"
+                    icon="user"
+                    src={`https://planck.troopers.agency/user/${asigned.id}/avatar`}
+                />
+                    :
+                <Avatar shape="square" size="large" icon="user" />,
+    },
+    {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        render:
+            text => <a href="javascript:;">{text}</a>,
+        },
+    {
+        title: 'Status',
+        key: 'status',
+        dataIndex: 'status',
+        render: tag => (
+            <span>
+                <Tag tag={tag}/>
+            </span>
+        ),
+    }
+];
 
 export const TaskList = (props) => {
 
