@@ -38,9 +38,12 @@ const TabPane = Tabs.TabPane;
 @connect(
     (state, {match: {params: {customerId, projectId}}}) => {
         const project = state.task.list.find((project) => project.projectId === parseInt(projectId));
+        const projectName = state.customer.list.find((customer) => customer.id === parseInt(customerId))
+            .projects.find((project) => project.id === parseInt(projectId)).name;
         const customer = state.customer.list.find((customer) => customer.id === parseInt(customerId));
         return ({
             customer,
+            projectName,
             tma: project.tma,
             tasks: project.tasks,
             sprints: project.sprints
@@ -68,13 +71,13 @@ class Project extends React.Component {
     }
 
     render() {
-        const { tma, tasks, sprints, customer } = this.props
+        const { tma, tasks, sprints, customer, projectName } = this.props
         const { selectedSprint } = this.state
 
         return (
             <div className="overflow-y-scroll">
             <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy bb b--black-05" style={{backgroundColor: '#f2f4f5'}}>
-                { customer.name }
+                { customer.name } { customer.projects.length > 1 && (` - ${projectName}`) }
             </p>
             <Tabs tabBarStyle={{display: 'flex', alignItems:'center', justifyContent:'center', flex: 1}} defaultActiveKey="1">
                 <TabPane tab={<Icon type="interation" theme="filled" style={{fontSize: '28px', color: '#3d324c' }} />} key="1">
