@@ -27,7 +27,7 @@
     "babel-preset-stage-1": "^6.22.0",
     "electron-localshortcut": "^1.1.1",
     "history": "^4.7.2",
-    "lodash": "^4.17.11",
+    "normalizr": "^3.3.0",
     "prop-types": "^15.7.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",

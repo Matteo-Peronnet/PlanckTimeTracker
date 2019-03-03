@@ -2,15 +2,13 @@ import { combineReducers } from 'redux'
 import { combineEpics } from 'redux-observable'
 import { routerReducer } from 'react-router-redux'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
-import { reducer as customerReducer } from './customer'
-import { reducer as taskReducer } from './task'
+import { reducer as planckReducer } from './planck'
 
 
 export const reducer = combineReducers({
     reduxAsyncConnect,
     router: routerReducer,
-    customer: customerReducer,
-    task: taskReducer
+    planck: planckReducer,
 }, window.__data)
 
 export const epic = combineEpics(

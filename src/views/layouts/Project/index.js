@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 
 import {Tabs, Icon, Empty, Select} from 'antd';
-import { getCustomerRequest } from "../../../store/ducks/customer";
-import { getProjectRequest } from "../../../store/ducks/task";
-import { getCustomerById } from "../../../store/selectors/customer";
-import { getProjectById, getProjectName } from "../../../store/selectors/project";
+import { getCustomersRequest, getProjectRequest} from "../../../store/ducks/planck";
 import TaskList from '../../../components/TaskList'
 import UserStory from '../../../components/UserStory'
+import {Ov} from "../../../utils";
 
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
@@ -20,17 +18,23 @@ const TabPane = Tabs.TabPane;
             customerId = parseInt(customerId);
             projectId = parseInt(projectId);
 
-            const { task: {list: taskList}, customer: {list: customerList} } = getState();
+            const {planck: {entities: {customers, projects}}} = getState();
 
-            const tasks = taskList.find((project) => project.projectId === projectId)
-            const customer = customerList.find((customer) => customer.id === customerId)
-
-            if(!tasks) {
-                promises.push(dispatch(getProjectRequest(projectId)));
+            // Check if we have already the customer and the project
+            if (!customers[customerId]) {
+                promises.push(dispatch(getCustomersRequest()));
             }
 
-            if (!customer) {
-                promises.push(dispatch(getCustomerRequest(customerId)));
+            // Check if we have the project
+            if (projects[projectId]) {
+
+                // Check if we have already the tasks/sprints/supportTasks of the project
+                if(!projects[projectId].tasks && !projects[projectId].sprints && !projects[projectId].supportTasks) {
+                    promises.push(dispatch(getProjectRequest(projectId)));
+                }
+            } else {
+                // We don't have the project
+                promises.push(dispatch(getProjectRequest(projectId)));
             }
 
             return Promise.all(promises);
@@ -39,14 +43,13 @@ const TabPane = Tabs.TabPane;
 ])
 @connect(
     (state, {match: {params: {customerId, projectId}}}) => {
-        const customer = getCustomerById(state, customerId);
-        const project = getProjectById(state, projectId);
+        const project = state.planck.entities.projects[projectId];
         return ({
-            customer,
-            projectName: getProjectName(customer, projectId),
-            tma: project.tma,
-            tasks: project.tasks,
-            sprints: project.sprints
+            project,
+            customer: state.planck.entities.customers[customerId],
+            sprints: project.sprints.map((id) => state.planck.entities.sprints[id]),
+            tasks: project.tasks.map((id) => state.planck.entities.tasks[id]),
+            supportTasks: project.supportTasks.map((id) => state.planck.entities.supportTasks[id]),
         })
     },
     dispatch => ({
@@ -71,13 +74,13 @@ class Project extends React.Component {
     }
 
     render() {
-        const { tma, tasks, sprints, customer, projectName } = this.props
+        const { supportTasks, tasks, sprints, customer, project } = this.props
         const { selectedSprint } = this.state
-
         return (
+
             <div className="overflow-y-scroll">
             <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy bb b--black-05" style={{backgroundColor: '#f2f4f5'}}>
-                { customer.name } { customer.projects.length > 1 && (` - ${projectName}`) }
+                { customer.name } { customer.projects.length > 1 && (` - ${project.name}`) }
             </p>
             <Tabs tabBarStyle={{display: 'flex', alignItems:'center', justifyContent:'center', flex: 1}} defaultActiveKey="1">
                 <TabPane tab={<Icon type="interation" theme="filled" style={{fontSize: '28px', color: '#3d324c' }} />} key="1">
@@ -112,7 +115,7 @@ class Project extends React.Component {
                         (tasks.length === 0) ?
                             (<Empty description="Il n'y a pas de tickets"/>)
                             :
-                            <TaskList taskType="tma" tasks={tma} />
+                            <TaskList taskType="supportTasks" tasks={supportTasks} />
                     }
                 </TabPane>
             </Tabs>

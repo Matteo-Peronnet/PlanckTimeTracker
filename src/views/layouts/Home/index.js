@@ -1,27 +1,30 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import { getCustomersRequest } from '../../../store/ducks/customer'
+import { getCustomersRequest } from '../../../store/ducks/planck'
 import { Menu, Dropdown, Avatar, Icon } from 'antd';
 import {Link} from "react-router-dom";
+import {Ov} from "../../../utils";
 
 
 @asyncConnect([
     {
         promise: ({ store: { dispatch, getState } }) => {
             const promises = [];
-            const { customer: {list: list} } = getState();
+            const { planck: {entities: {customers}} } = getState();
 
-            if(list.length === 0 || list.length === 1) {
+            if(Ov(customers).length === 0 || Ov(customers).length === 1) {
                 promises.push(dispatch(getCustomersRequest()));
             }
+
             return Promise.all(promises);
         },
     },
 ])
 @connect(
     state => ({
-        customers: state.customer.list
+        customers: state.planck.entities.customers,
+        projects: state.planck.entities.projects
     }),
     dispatch => ({
     }),
@@ -32,12 +35,12 @@ class Home extends React.Component {
         (
             <Menu>
             {
-                customer.projects.map((project, key) =>
+                customer.projects.map((projectId, key) =>
                     <Menu.Item key={key}>
                         <Link
-                            to={`customer/${customer.id}/project/${project.id}`}
+                            to={`customer/${customer.id}/project/${projectId}`}
                         >
-                            {project.name}
+                            {this.props.projects[projectId].name}
                         </Link>
                     </Menu.Item>
                 )
@@ -47,11 +50,12 @@ class Home extends React.Component {
 
     render() {
         const { customers } = this.props;
-
         return (
             <div className={"flex flex-auto flex-row flex-wrap items-center justify-center pa1"}>
                 {
-                  customers.map((customer) => {
+                  Ov(customers).sort(function(a,b){
+                      return a.name.localeCompare(b.name);
+                  }).map((customer) => {
                       const avatar = <Avatar
                           style={{margin: "5px", cursor: 'pointer', border: '1px solid #ebedf0'}}
                           key={customer.id}
@@ -69,7 +73,7 @@ class Home extends React.Component {
                       }
                       return <Link
                           key={customer.id}
-                          to={`customer/${customer.id}/project/${customer.projects[0].id}`}
+                          to={`customer/${customer.id}/project/${customer.projects[0]}`}
                       >
                           {avatar}
                       </Link>
