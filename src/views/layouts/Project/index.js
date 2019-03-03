@@ -48,6 +48,7 @@ const TabPane = Tabs.TabPane;
             project,
             customer: state.planck.entities.customers[customerId],
             sprints: project.sprints.map((id) => state.planck.entities.sprints[id]),
+            userStories: state.planck.entities.userStories,
             tasks: project.tasks.map((id) => state.planck.entities.tasks[id]),
             supportTasks: project.supportTasks.map((id) => state.planck.entities.supportTasks[id]),
         })
@@ -63,19 +64,21 @@ class Project extends React.Component {
         this.handleChange = this.handleChange.bind(this);
 
         this.state = {
-            selectedSprint: null
+            sprintUserStories: null
         }
     }
 
     handleChange(value) {
         this.setState({
-            selectedSprint: this.props.sprints.find((sprint) => sprint.id === value)
+            sprintUserStories: this.props.sprints
+                .find((sprint) => sprint.id === value).userStories
+                .map((id) => this.props.userStories[id])
         })
     }
 
     render() {
         const { supportTasks, tasks, sprints, customer, project } = this.props
-        const { selectedSprint } = this.state
+        const { sprintUserStories } = this.state
         return (
 
             <div className="overflow-y-scroll">
@@ -95,8 +98,8 @@ class Project extends React.Component {
                                 }
                             </Select>
                             {
-                                selectedSprint && (
-                                    <UserStory userStories={selectedSprint.userStories}/>
+                                sprintUserStories && (
+                                    <UserStory userStories={sprintUserStories}/>
                                 )
                             }
                         </div>

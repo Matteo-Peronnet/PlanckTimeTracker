@@ -19,8 +19,10 @@ const INITIAL_STATE = {
     entities: {
         projects: {},
         customers: {},
-        tasks: {},
         sprints: {},
+        userStories: {},
+        usTasks: {},
+        tasks: {},
         supportTasks: {}
     }
 }
@@ -46,6 +48,14 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                     sprints: {
                         ...state.entities.sprints,
                         ...action.result.entities.sprints
+                    },
+                    userStories: {
+                        ...state.entities.userStories,
+                        ...action.result.entities.userStories
+                    },
+                    usTasks: {
+                        ...state.entities.usTasks,
+                        ...action.result.entities.usTasks
                     },
                     tasks: {
                         ...state.entities.tasks,
