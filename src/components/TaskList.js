@@ -33,17 +33,18 @@ const columns = (customerId, projectId, taskType) => ([
                     to={`/customer/${customerId}/project/${projectId}/task/${taskType}/${record.id}`}
                     style={{ cursor: "pointer" }}
                 >
-                    {`#${record.uid.uid} ${text}`}
+                    <p>{`#${record.uid.uid} ${text}`}</p>
                 </Link>
             }
         },
     {
-        title: 'Status',
-        key: 'status',
-        dataIndex: 'status',
-        render: tag => (
+        title: 'Type',
+        key: 'type',
+        dataIndex: 'type',
+        width: 70,
+        render: type => (
             <span>
-                <Tag tag={tag}/>
+                <Tag type="type" color={type ? type.color : ''} tag={type ? type.label : ''}/>
             </span>
         ),
     }
@@ -67,6 +68,7 @@ export const TaskList = (props) => {
                     bordered={false}
                     showHeader={false}
                     pagination={false}
+                    size="middle"
                 />
             </Panel>
             <Panel header="WIP" key="2" disabled={wip.length === 0}>
@@ -76,6 +78,7 @@ export const TaskList = (props) => {
                     bordered={false}
                     showHeader={false}
                     pagination={false}
+                    size="middle"
                 />
             </Panel>
             <Panel header="PR" key="3" disabled={pr.length === 0}>
@@ -85,6 +88,7 @@ export const TaskList = (props) => {
                     bordered={false}
                     showHeader={false}
                     pagination={false}
+                    size="middle"
                 />
             </Panel>
             <Panel header="DONE" key="4" disabled={done.length === 0}>
@@ -94,6 +98,7 @@ export const TaskList = (props) => {
                     bordered={false}
                     showHeader={false}
                     pagination={false}
+                    size="middle"
                 />
             </Panel>
         </Collapse>

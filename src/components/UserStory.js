@@ -31,7 +31,7 @@ export const UserStory = (props) => {
                         header={
                             <div className={'flex flex-auto items-center justify-between'}>
                                 {`US: ${userStorie.title}`}
-                                <span>{<Tag tag={userStorie.status}/>}</span>
+                                <span>{<Tag type="status" tag={userStorie.status}/>}</span>
                             </div>
                         }
                     >
