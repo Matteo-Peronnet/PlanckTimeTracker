@@ -6,7 +6,6 @@ import { Button, Card, Empty, Divider, Row, Col, Icon, Progress} from "antd";
 import TimeAgo from 'react-timeago';
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
-import parse from 'html-react-parser';
 import Tag from "../../../components/Tag";
 import Time from "../../../components/Time";
 import { withRouter } from "react-router-dom";
@@ -163,7 +162,7 @@ class Task extends React.Component {
                                     task.description ?
                                         <Fragment>
                                             <h3 className="tc">Description</h3>
-                                            {parse(task.description)}
+                                            <div dangerouslySetInnerHTML={{ __html: task.description }} />
                                         </Fragment>
                                         :
                                         <Empty description={"Il n'y a pas de description"}/>
