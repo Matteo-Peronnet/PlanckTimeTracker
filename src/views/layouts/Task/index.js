@@ -10,7 +10,7 @@ import parse from 'html-react-parser';
 import Tag from "../../../components/Tag";
 import Time from "../../../components/Time";
 import { withRouter } from "react-router-dom";
-
+import { shell } from 'electron';
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -47,6 +47,8 @@ const formatter = buildFormatter(frenchStrings)
 @connect(
     (state, {match: {params: {customerId, projectId, taskType, taskId}}}) => {
         return ({
+            customer: state.planck.entities.customers[customerId],
+            project: state.planck.entities.projects[projectId],
             task: state.planck.entities[taskType][taskId],
         })
     },
@@ -55,9 +57,10 @@ const formatter = buildFormatter(frenchStrings)
 )
 class Task extends React.Component {
 
+    openUrl = (url) => shell.openExternal(url);
 
     render() {
-        const { task } = this.props;
+        const { task, customer, project } = this.props;
 
         const allTimeSpent = task.spentTimes.reduce((acc, curr) => acc + curr.time, 0);
 
@@ -66,7 +69,7 @@ class Task extends React.Component {
                 <Row>
                     <Col span={24}>
                         <div style={{padding: "15px 10px 30px"}}>
-                            <div className={"flex flex-auto items-center"} style={{ padding: "16px 32px", border: "1px solid rgb(235, 237, 240)"}}>
+                            <div className={"flex flex-auto items-center"} style={{ padding: "16px 32px", border: "1px solid rgb(235, 237, 240)", paddingRight: 0}}>
                                 <span style={{cursor: 'pointer'}} onClick={this.props.history.goBack}>
                                     <Icon type="arrow-left-o" />
                                 </span>
@@ -81,7 +84,7 @@ class Task extends React.Component {
                 </Row>
                 <Row>
                     <Col span={24}>
-                        <div style={{ padding: "15px 0px", border: "1px solid rgb(235, 237, 240)"}}>
+                        <div style={{ padding: "15px 0px", border: "1px solid rgb(235, 237, 240)", position: 'relative'}}>
                         <div>
                             <h3 className="tc">Informations</h3>
                         </div>
@@ -104,6 +107,14 @@ class Task extends React.Component {
                                 <span className="fw5">Type :</span> <Tag type="type" color={task.type ? task.type.color : ''} tag={task.type ? task.type.label : ''}/>
                             </div>
                         </div>
+                        </div>
+                        <div style={{position: 'absolute', top: 12, right: 10}}>
+                            <Button
+                                type="primary"
+                                icon="global"
+                                size={"small"}
+                                onClick={() => this.openUrl(`https://planck.troopers.agency/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
+                            />
                         </div>
                     </Col>
                 </Row>
