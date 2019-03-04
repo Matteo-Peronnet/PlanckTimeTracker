@@ -1,9 +1,10 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { Collapse, Table, Avatar } from 'antd';
+import { Collapse, Table, Avatar as AntAvatar } from 'antd';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import Tag from './Tag'
+import Avatar from './Avatar'
 const Panel = Collapse.Panel;
 
 const columns = (customerId, projectId, taskType) => ([
@@ -13,14 +14,9 @@ const columns = (customerId, projectId, taskType) => ([
         key: 'asigned',
         render:
             asigned => asigned ?
-                <Avatar
-                    shape="square"
-                    size="large"
-                    icon="user"
-                    src={`https://planck.troopers.agency/user/${asigned.id}/avatar`}
-                />
+                <Avatar userId={asigned.id}/>
                     :
-                <Avatar shape="square" size="large" icon="user" />,
+                <AntAvatar shape="square" size="large" icon="user" />,
     },
     {
         title: 'Title',

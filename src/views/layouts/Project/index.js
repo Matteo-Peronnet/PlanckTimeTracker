@@ -20,7 +20,7 @@ const TabPane = Tabs.TabPane;
 
             const {planck: {entities: {customers, projects}}} = getState();
 
-            // Check if we have already the customer and the project
+            // Check if we already have the customer
             if (!customers[customerId]) {
                 promises.push(dispatch(getCustomersRequest()));
             }

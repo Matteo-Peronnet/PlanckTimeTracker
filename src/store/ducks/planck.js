@@ -72,7 +72,6 @@ export function reducer(state = INITIAL_STATE, action = {}) {
     }
 }
 
-
 export function getCustomersRequest() {
     return {
         types: [GET_CUSTOMERS_REQUEST, GET_CUSTOMERS_SUCCESS, GET_CUSTOMERS_FAILURE],
