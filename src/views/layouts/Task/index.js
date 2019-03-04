@@ -7,10 +7,10 @@ import TimeAgo from 'react-timeago';
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 import parse from 'html-react-parser';
-import Avatar from "../../../components/Avatar";
 import Tag from "../../../components/Tag";
 import Time from "../../../components/Time";
-import {Link} from "react-router-dom";
+import { withRouter } from "react-router-dom";
+
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -67,9 +67,9 @@ class Task extends React.Component {
                     <Col span={24}>
                         <div style={{padding: "15px 10px 30px"}}>
                             <div className={"flex flex-auto items-center"} style={{ padding: "16px 32px", border: "1px solid rgb(235, 237, 240)"}}>
-                                <Link to={"#"} className="link dim black-80">
+                                <span style={{cursor: 'pointer'}} onClick={this.props.history.goBack}>
                                     <Icon type="arrow-left-o" />
-                                </Link>
+                                </span>
                                 <Divider type="vertical" />
                                 <div className="flex flex-auto items-center justify-between">
                                     <span className="fw7"><span className="fw8">{`#${task.uid.uid}`}</span> {`${task.title}`}</span>
@@ -107,24 +107,47 @@ class Task extends React.Component {
                         </div>
                     </Col>
                 </Row>
+                <h3 className="tc mt3">Temps passé</h3>
                 <Row>
-                    <h3 className="tc mt3">Temps passé</h3>
                     <Col span={11}>
                         <div className="flex flex-auto items-center justify-center">
-                            <Progress type="circle" percent={Math.round((allTimeSpent/task.estimatedTime)*100)} showInfo={true} format={() => <Time time={allTimeSpent}/>} />
+                            {
+                                task.estimatedTime ?
+                                    <Progress
+                                        type="circle"
+                                        percent={Math.round((allTimeSpent/task.estimatedTime)*100)}
+                                        status={task.estimatedTime ? allTimeSpent > task.estimatedTime ? "exception" : 'normal' : 'normal'}
+                                        showInfo={true}
+                                        format={() => <Time time={allTimeSpent}/>} />
+                                    :
+                                    <Progress
+                                        type="circle"
+                                        percent={0}
+                                        showInfo={true}
+                                        format={() => <Time time={allTimeSpent}/>} />
+                            }
                         </div>
                     </Col>
                     <Col span={2}>
-                        <Divider type="vertical" />
+                        <div className="flex flex-auto items-center justify-center">
+                            <Divider type="vertical" style={{height: '120px'}} />
+                        </div>
                     </Col>
                     <Col span={11}>
-
+                        <div className="flex flex-auto items-start justify-center flex-column">
+                            <div>
+                                <span className="fw6">Temps passé :</span> <Time time={allTimeSpent}/>
+                            </div>
+                            <div>
+                                <span className="fw6">Temps estimé :</span> <Time time={task.estimatedTime || 0}/>
+                            </div>
+                        </div>
                     </Col>
                 </Row>
                 <div className="flex flex-row flex-auto items-center w-100 mt4">
                     <Row>
                         <Col span={24}>
-                            <Card>
+                            <Card style={{width: '100vw'}}>
                                 {
                                     task.description ?
                                         <Fragment>
@@ -138,9 +161,14 @@ class Task extends React.Component {
                         </Col>
                     </Row>
                 </div>
+                <Row>
+                    <div className="flex flex-row flex-auto justify-center items-center mt1" style={{padding: "15px 0px"}}>
+                        <Button type="primary" icon="dashboard" size={"default"}>Démarrer timer</Button>
+                    </div>
+                </Row>
             </div>
         );
     }
 }
 
-export default Task
+export default withRouter(Task)
