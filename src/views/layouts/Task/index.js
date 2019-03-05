@@ -110,7 +110,7 @@ class Task extends React.Component {
                                 type="primary"
                                 icon="global"
                                 size={"small"}
-                                onClick={() => openUrl(`https://planck.troopers.agency/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
+                                onClick={() => openUrl(`${process.env.PLANCK_HOST}/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
                             />
                         </div>
                     </Col>

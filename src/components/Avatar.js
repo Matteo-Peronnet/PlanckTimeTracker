@@ -11,7 +11,7 @@ export const Avatar = (props) => {
             shape="square"
             size={size}
             icon="user"
-            src={`https://planck.troopers.agency/user/${userId}/avatar`}
+            src={`${process.env.PLANCK_HOST}/user/${userId}/avatar`}
         />
     )
 

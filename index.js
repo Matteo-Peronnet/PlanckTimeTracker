@@ -1,3 +1,4 @@
+require('dotenv').config()
 const path = require('path');
 const electron = require('electron');
 const PlanckTray = require('./app/planckTray');

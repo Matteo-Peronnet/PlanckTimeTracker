@@ -1,6 +1,7 @@
-var webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
+const webpack = require('webpack');
+const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -10,6 +11,11 @@ fs.readdirSync('node_modules')
     .forEach(function(mod) {
         nodeModules[mod] = 'commonjs ' + mod;
     });
+
+new webpack.EnvironmentPlugin({
+    NODE_ENV: 'dev',
+    ...dotenv.config().parsed // <-- this line
+}),
 
 module.exports = {
     externals: nodeModules,

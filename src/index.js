@@ -6,7 +6,7 @@ import { HashRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import { ReduxAsyncConnect } from 'redux-connect';
 import store from './store'
-import routes from './routes';
+import routes from './routes/routes';
 
 ReactDOM.render(
     <ReduxProvider store={store}>

@@ -59,7 +59,7 @@ class Home extends React.Component {
                       const avatar = <Avatar
                           style={{margin: "5px", cursor: 'pointer', border: '1px solid #ebedf0'}}
                           key={customer.id}
-                          src={`https://planck.troopers.agency/uploads/customers/logo/${customer.logo}`}
+                          src={`${process.env.PLANCK_HOST}/uploads/customers/logo/${customer.logo}`}
                           shape="square" size={70}
                       />
 
