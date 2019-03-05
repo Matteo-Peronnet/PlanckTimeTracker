@@ -1,10 +1,8 @@
 import React from 'react';
-import isPrivate from './isPrivate'
-import App from '../views/layouts/App/index';
-import Home from '../views/layouts/Home/index';
-import Project from '../views/layouts/Project/index';
-import Task from '../views/layouts/Task/index';
-import Login from '../views/layouts/Login/index';
+import App from './views/layouts/App';
+import Home from './views/layouts/Home';
+import Project from './views/layouts/Project';
+import Task from './views/layouts/Task';
 
 const routes = [
     {
@@ -13,25 +11,18 @@ const routes = [
             {
                 path: '/',
                 exact: true,
-                component: isPrivate(Home)
+                component: Home
             },
             {
                 path: '/customer/:customerId/project/:projectId',
-                component: isPrivate(Project),
+                component: Project,
                 exact: true,
             },
             {
                 path: '/customer/:customerId/project/:projectId/task/:taskType/:taskId',
-                component: isPrivate(Task),
+                component: Task,
                 exact: true,
-            },
-            {
-                path: '/login',
-                name: 'Login',
-                component: Login,
-                exact: true,
-            },
-
+            }
         ]
     }
 ]
