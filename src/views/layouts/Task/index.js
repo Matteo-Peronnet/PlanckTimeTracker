@@ -8,8 +8,8 @@ import frenchStrings from 'react-timeago/lib/language-strings/fr'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 import Tag from "../../../components/Tag";
 import Time from "../../../components/Time";
+import { openUrl } from "../../../utils";
 import { withRouter } from "react-router-dom";
-import { shell } from 'electron';
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -55,8 +55,6 @@ const formatter = buildFormatter(frenchStrings)
     }),
 )
 class Task extends React.Component {
-
-    openUrl = (url) => shell.openExternal(url);
 
     render() {
         const { task, customer, project } = this.props;
@@ -112,7 +110,7 @@ class Task extends React.Component {
                                 type="primary"
                                 icon="global"
                                 size={"small"}
-                                onClick={() => this.openUrl(`https://planck.troopers.agency/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
+                                onClick={() => openUrl(`https://planck.troopers.agency/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
                             />
                         </div>
                     </Col>
