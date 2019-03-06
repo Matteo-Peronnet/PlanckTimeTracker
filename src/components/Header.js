@@ -31,7 +31,7 @@ export default class Header extends Component {
                             to="/settings"
                             style={{ cursor: "pointer" }}
                         >
-                            <Avatar userId={43}/>
+                            <Avatar userId={user.id}/>
                         </Link>)
                     }
                 </nav>
