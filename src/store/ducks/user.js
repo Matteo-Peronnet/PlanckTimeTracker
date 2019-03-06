@@ -32,6 +32,7 @@ export function reducer(state = INITIAL_STATE, action = {}) {
         case LOGIN_SUCCESS:
             return {
                 ...state,
+                id: action.payload.id,
                 firstname: action.payload.firstname,
                 lastname: action.payload.lastname,
                 token: action.payload.token,

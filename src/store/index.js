@@ -31,7 +31,7 @@ if (hooks.after) {
 const store = createStore(reducer(history), middleware)
 
 store.dispatch(initApp())
-
+history.replace('/')
 
 epicMiddleware.run(epic)
 

@@ -9,7 +9,6 @@ const isPrivate = WrappedComponent => {
             return <WrappedComponent {...this.props} />;
         }
     }
-
     return compose(
         connect((state, props) => ({
             isLogged: state.user.isLogged,
