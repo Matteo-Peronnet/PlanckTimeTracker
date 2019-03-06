@@ -7,6 +7,7 @@ import { getCustomersRequest, getProjectRequest} from "../../../store/ducks/plan
 import TaskList from '../../../components/TaskList'
 import UserStory from '../../../components/UserStory'
 import {Ov} from "../../../utils";
+import isPrivate from "../../../routes/isPrivate";
 
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
@@ -56,6 +57,7 @@ const TabPane = Tabs.TabPane;
     dispatch => ({
     }),
 )
+@isPrivate
 class Project extends React.Component {
 
     constructor(props) {

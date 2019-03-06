@@ -1,11 +1,11 @@
 
-export function getCustomers() {
+export function getCustomers(token) {
     return {
-        url: `http://127.0.0.1:8000/app_dev.php/api/timeTracker/customers`,
+        url: `http://planck.troopers.test/app_dev.php/api/timeTracker/customers`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',
-            Authorization: null,
+            'X-TIME-TRACKER-TOKEN': token
         },
     }
 }

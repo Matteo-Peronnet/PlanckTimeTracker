@@ -75,7 +75,7 @@ export function reducer(state = INITIAL_STATE, action = {}) {
 export function getCustomersRequest() {
     return {
         types: [GET_CUSTOMERS_REQUEST, GET_CUSTOMERS_SUCCESS, GET_CUSTOMERS_FAILURE],
-        promise: (getState) => ajax(getCustomers()).pipe(
+        promise: (getState) => ajax(getCustomers(getState().user.token)).pipe(
             map((res) => normalize(res.response, [customersSchema])),
             catchError((error) => Promise.reject(error)),
         ).toPromise()
@@ -85,7 +85,7 @@ export function getCustomersRequest() {
 export function getProjectRequest(id) {
     return {
         types: [GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE],
-        promise: (getState) => ajax(getProject(id)).pipe(
+        promise: (getState) => ajax(getProject(getState().user.token,id)).pipe(
             map((res) =>
                 normalize({
                     project: {

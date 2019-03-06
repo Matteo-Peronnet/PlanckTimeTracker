@@ -10,6 +10,7 @@ import Tag from "../../../components/Tag";
 import Time from "../../../components/Time";
 import { openUrl } from "../../../utils";
 import { withRouter } from "react-router-dom";
+import isPrivate from "../../../routes/isPrivate";
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -54,6 +55,7 @@ const formatter = buildFormatter(frenchStrings)
     dispatch => ({
     }),
 )
+@isPrivate
 class Task extends React.Component {
 
     render() {

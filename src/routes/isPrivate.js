@@ -1,24 +1,29 @@
-import React  from 'react';
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-
-export default (WrappedComponent) => {
-    const WithSecurity = (props) => {
-        if (!props.isLogged) {
-            return <Redirect to="/login" />
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { branch, compose, renderComponent } from 'recompose';
+import Login from '../views/layouts/Login'
+import { push } from 'connected-react-router'
+const isPrivate = WrappedComponent => {
+    class WithLoginComponent extends Component {
+        render() {
+            return <WrappedComponent {...this.props} />;
         }
-
-        return <WrappedComponent {...props} />
     }
 
-    WithSecurity.propTypes = {
-        isLogged: PropTypes.bool,
-    }
+    return compose(
+        connect((state, props) => ({
+            isLogged: state.user.isLogged,
+        })),
+        branch( props => {
+                if(!props.isLogged){
+                    props.dispatch(push('/login'))
+                }
+                return props.isLogged
+            },
+            renderComponent(WrappedComponent),
+            renderComponent(Login),
+        )
+    )(WithLoginComponent)
+};
 
-    const mapStateToProps = (state) => ({
-        isLogged: false
-    })
-
-    return connect(mapStateToProps)(WithSecurity)
-}
+export default isPrivate;

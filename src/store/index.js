@@ -1,16 +1,15 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createEpicMiddleware } from 'redux-observable'
-import { routerMiddleware, push } from 'react-router-redux'
+import { routerMiddleware } from 'connected-react-router'
 import reduxCasesMiddleware from './middleware/reduxCasesMiddleware'
-import createHistory from 'history/createBrowserHistory'
-import { reducer, epic } from './ducks'
+import { createHashHistory } from 'history'
+import reducer, {epic} from './ducks'
 import { initApp } from './ducks/app'
 import {xhook} from 'xhook'
 import hooks from './utils/hooks'
 
-export const history = createHistory();
-
+export const history = createHashHistory();
 const epicMiddleware = createEpicMiddleware();
 
 const middleware = composeWithDevTools(
@@ -29,7 +28,7 @@ if (hooks.after) {
     xhook.after((response) => hooks.after(response, store.getState()))
 }
 
-const store = createStore(reducer, middleware)
+const store = createStore(reducer(history), middleware)
 
 store.dispatch(initApp())
 

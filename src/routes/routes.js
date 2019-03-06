@@ -4,7 +4,6 @@ import Home from '../views/layouts/Home';
 import Project from '../views/layouts/Project';
 import Task from '../views/layouts/Task';
 import Login from '../views/layouts/Login';
-import isPrivate from './isPrivate'
 
 const routes = [
     {
@@ -13,16 +12,16 @@ const routes = [
             {
                 path: '/',
                 exact: true,
-                component: isPrivate(Home)
+                component: Home
             },
             {
                 path: '/customer/:customerId/project/:projectId',
-                component: isPrivate(Project),
+                component: Project,
                 exact: true,
             },
             {
                 path: '/customer/:customerId/project/:projectId/task/:taskType/:taskId',
-                component: isPrivate(Task),
+                component: Task,
                 exact: true,
             },
             {

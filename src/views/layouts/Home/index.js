@@ -5,6 +5,7 @@ import { getCustomersRequest } from '../../../store/ducks/planck'
 import { Menu, Dropdown, Avatar, Icon } from 'antd';
 import {Link} from "react-router-dom";
 import {Ov} from "../../../utils";
+import isPrivate from "../../../routes/isPrivate";
 
 
 @asyncConnect([
@@ -29,6 +30,7 @@ import {Ov} from "../../../utils";
     dispatch => ({
     }),
 )
+@isPrivate
 class Home extends React.Component {
 
     customerMenuProject = (customer) =>
