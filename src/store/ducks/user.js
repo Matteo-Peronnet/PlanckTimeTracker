@@ -1,11 +1,12 @@
 import React from "react";
-import { NEVER, of } from 'rxjs';
+import { NEVER, of, from } from 'rxjs';
 import { ajax } from 'rxjs/ajax'
 import { push } from 'connected-react-router'
 import { map, mergeMap, catchError } from 'rxjs/operators'
 import { ofType, combineEpics } from 'redux-observable'
 import {login} from "../services/authentication";
 import { openNotificationByType } from '../../utils'
+import {ipcRenderer} from "electron";
 
 const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
 const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
@@ -76,7 +77,7 @@ export const epic = combineEpics(
     loginSuccessEpic
 )
 
-export function loginRequestEpic(action$, state$) {
+export function loginRequestEpic(action$) {
     return action$.pipe(
         ofType(LOGIN_REQUEST),
         mergeMap(({payload}) =>
@@ -100,9 +101,12 @@ export function loginFailureEpic(action$) {
     )
 }
 
-export function loginSuccessEpic(action$) {
+export function loginSuccessEpic(action$, state$) {
     return action$.pipe(
         ofType(LOGIN_SUCCESS),
-        mergeMap(() => of(push('/')))
+        mergeMap(() => {
+            ipcRenderer.send('setToken', state$.value.user.token)
+            return of(push('/'));
+        })
     )
 }

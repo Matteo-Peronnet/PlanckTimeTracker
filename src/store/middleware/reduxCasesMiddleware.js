@@ -1,7 +1,13 @@
+import { isObservable } from "rxjs";
+
 export default function reduxCasesMiddleware() {
     return ({ dispatch, getState }) => {
-        return next => action => {
+        return next =>  action => {
             if (typeof action === 'function') {
+                return action(dispatch, getState);
+            }
+
+            if(isObservable(action)){
                 return action(dispatch, getState);
             }
 
@@ -9,7 +15,6 @@ export default function reduxCasesMiddleware() {
             if (!promise) {
                 return next(action);
             }
-
             const [REQUEST, SUCCESS, FAILURE] = types;
             next({ ...rest, type: REQUEST });
             return promise(getState)
