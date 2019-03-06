@@ -18,7 +18,6 @@ let firstAsyncConnect = false;
             ipcRenderer.send('getToken');
             ipcRenderer.on('getTokenResult', (event, token) => {
                 if(!user.isLogged && token && !firstAsyncConnect) {
-                    console.log(user)
                     firstAsyncConnect = true;
                     promises.push(dispatch(loginRequest(token)))
                 }
