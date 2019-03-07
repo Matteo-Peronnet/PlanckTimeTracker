@@ -12,6 +12,9 @@ const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
 const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
 const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
 
+const LOGOUT_REQUEST = 'user/LOGOUT_REQUEST';
+const LOGOUT_SUCCESS = 'user/LOGOUT_SUCCESS';
+
 // Initial state
 const INITIAL_STATE = {
     id: null,
@@ -46,6 +49,11 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                 loading: false,
             }
         }
+        case LOGOUT_SUCCESS: {
+            return {
+                ...INITIAL_STATE
+            }
+        }
         default:
             return state
     }
@@ -70,6 +78,14 @@ export function loginFailure(payload) {
         payload
     }
 }
+
+export const logoutRequest = () => dispatch => {
+    console.log('hi')
+    ipcRenderer.send('deleteToken');
+    ipcRenderer.on('deleteTokenResult', (event) => {
+        dispatch({ type: LOGOUT_SUCCESS });
+    });
+};
 
 export const epic = combineEpics(
     loginRequestEpic,

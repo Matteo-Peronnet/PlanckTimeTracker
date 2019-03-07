@@ -9,6 +9,8 @@ const { app, ipcMain } = electron;
 let mainWindow;
 let tray;
 
+process.setMaxListeners(Infinity);
+
 app.on('ready', () => {
     app.dock.hide();
 
@@ -32,6 +34,11 @@ app.on('ready', () => {
     ipcMain.on('setToken', (event, arg) => {
         keytar.setPassword('PlanckTimeTracker', 'Planck', arg).then(() => {
             event.sender.send('setTokenResult');
+        });
+    });
+    ipcMain.on('deleteToken', (event, arg) => {
+        keytar.deletePassword('PlanckTimeTracker', 'Planck').then(() => {
+            event.sender.send('deleteTokenResult');
         });
     });
 });
