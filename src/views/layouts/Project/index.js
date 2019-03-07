@@ -86,11 +86,11 @@ class Project extends React.Component {
         return (
 
             <div className="overflow-y-scroll">
-            <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy bb b--black-05" style={{backgroundColor: '#f2f4f5'}}>
+            <p className="flex flex-auto items-center justify-center ma0 fw4 f4 lh-copy bb b--black-05" style={{backgroundColor: 'rgb(61, 50, 76)', color: 'white'}}>
                 { customer.name } { customer.projects.length > 1 && (` - ${project.name}`) }
             </p>
             <Tabs tabBarStyle={{display: 'flex', alignItems:'center', justifyContent:'center', flex: 1}} defaultActiveKey="1">
-                <TabPane tab={<Icon type="interation" theme="filled" style={{fontSize: '28px', color: '#3d324c' }} />} key="1">
+                <TabPane tab={<p className="f5"><FormattedMessage id="pages.project.tabs.sprints" /></p>} key="1">
                     {
                         (sprints.length === 0) ?
                             (<Empty description={<FormattedMessage id="pages.project.sprints.empty" />}/>)
@@ -109,7 +109,7 @@ class Project extends React.Component {
                         </div>
                     }
                 </TabPane>
-                <TabPane tab={<Icon type="project" theme="filled" style={{ fontSize: '28px', color: '#3d324c' }} />} key="2">
+                <TabPane tab={<p className="f5"><FormattedMessage id="pages.project.tabs.kanban" /></p>} key="2">
                     {
                         (tasks.length === 0) ?
                             (<Empty description={<FormattedMessage id="pages.project.tickets.empty" />} />)
@@ -117,7 +117,7 @@ class Project extends React.Component {
                             <TaskList taskType="tasks" tasks={tasks} />
                     }
                 </TabPane>
-                <TabPane tab={<Icon type="hdd" theme="filled" style={{ fontSize: '28px', color: '#3d324c' }} />} key="3">
+                <TabPane tab={<p className="f5"><FormattedMessage id="pages.project.tabs.tma" /></p>} key="3">
                     {
                         (tasks.length === 0) ?
                             (<Empty description={<FormattedMessage id="pages.project.tickets.empty" />} />)

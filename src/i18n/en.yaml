@@ -3,6 +3,10 @@ pages:
     title: "Connection"
     connexion: "Login"
   project:
+    tabs:
+      sprints: "SPRINTS"
+      kanban: "KANBAN"
+      tma: "TMA"
     sprints:
       select: "Select a sprint"
       empty: "There are no sprints"
