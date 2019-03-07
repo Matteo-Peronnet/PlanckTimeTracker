@@ -4,7 +4,7 @@ import { connectRouter } from 'connected-react-router'
 import { reducer as reduxAsyncConnect } from 'redux-connect'
 import { reducer as planckReducer } from './planck'
 import { reducer as userReducer, epic as userEpic } from './user'
-import { reducer as intlReducer, epic as intlEpic } from './intl'
+import { reducer as intlReducer } from './intl'
 
 export default (history) =>  combineReducers({
     reduxAsyncConnect,
@@ -15,6 +15,5 @@ export default (history) =>  combineReducers({
 }, window.__data)
 
 export const epic = combineEpics(
-    userEpic,
-    intlEpic
+    userEpic
 )

@@ -17,8 +17,6 @@ const availables = [
 
 const current = store.get('locale')
 
-console.log(current)
-
 export const locale = availables.includes(current) ? current : fallback
 export const messages = {
     fr: dotize.convert(fr),
