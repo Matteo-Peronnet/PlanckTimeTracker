@@ -11,6 +11,7 @@ import Time from "../../../components/Time";
 import { openUrl } from "../../../utils";
 import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
+import { injectIntl, FormattedMessage } from 'react-intl'
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -56,6 +57,7 @@ const formatter = buildFormatter(frenchStrings)
     }),
 )
 @isPrivate
+@injectIntl
 class Task extends React.Component {
 
     render() {
@@ -85,25 +87,25 @@ class Task extends React.Component {
                     <Col span={24}>
                         <div style={{ padding: "15px 0px", border: "1px solid rgb(235, 237, 240)", position: 'relative'}}>
                         <div>
-                            <h3 className="tc">Informations</h3>
+                            <h3 className="tc"><FormattedMessage id="pages.task.title.information" /></h3>
                         </div>
                         <div className="flex flex-auto items-center justify-between" style={{padding: "0px 10px 0px 15px"}}>
                             <div>
-                                <span className="fw6">Crée par :</span> {task.author.firstname} {task.author.lastname}, <span className="i"><TimeAgo date={task.createdAt} formatter={formatter}/></span>
+                                <span className="fw6"><FormattedMessage id="pages.task.createdBy" /> : </span> {task.author.firstname} {task.author.lastname}, <span className="i"><TimeAgo date={task.createdAt} formatter={formatter}/></span>
                             </div>
                         </div>
                         <div className="flex flex-auto items-center justify-between mt2" style={{padding: "0px 10px 0px 15px"}}>
                             <div>
-                                <span className="fw6">Assigné à : </span> {
+                                <span className="fw6"><FormattedMessage id="pages.task.assignTo" /> : </span> {
                                 task.assignedTo ? <span>{task.assignedTo.firstname} {task.assignedTo.lastname}</span>
                                     :
                                 <Button size="small" style={{ verticalAlign: 'middle' }}>
-                                    S'assigner
+                                    <FormattedMessage id="pages.task.assign" />
                                 </Button>
                                 }
                             </div>
                             <div>
-                                <span className="fw5">Type :</span> <Tag type="type" color={task.type ? task.type.color : ''} tag={task.type ? task.type.label : ''}/>
+                                <span className="fw5"><FormattedMessage id="pages.task.type" /> : </span> <Tag type="type" color={task.type ? task.type.color : ''} tag={task.type ? task.type.label : ''}/>
                             </div>
                         </div>
                         </div>
@@ -117,7 +119,7 @@ class Task extends React.Component {
                         </div>
                     </Col>
                 </Row>
-                <h3 className="tc mt3">Temps passé</h3>
+                <h3 className="tc mt3"><FormattedMessage id="pages.task.time.spent" /></h3>
                 <Row>
                     <Col span={11}>
                         <div className="flex flex-auto items-center justify-center">
@@ -146,10 +148,10 @@ class Task extends React.Component {
                     <Col span={11}>
                         <div className="flex flex-auto items-start justify-center flex-column">
                             <div>
-                                <span className="fw6">Temps passé :</span> <Time time={allTimeSpent}/>
+                                <span className="fw6"><FormattedMessage id="pages.task.time.spent" /> :</span> <Time time={allTimeSpent}/>
                             </div>
                             <div>
-                                <span className="fw6">Temps estimé :</span> <Time time={task.estimatedTime || 0}/>
+                                <span className="fw6"><FormattedMessage id="pages.task.time.estimated" /> :</span> <Time time={task.estimatedTime || 0}/>
                             </div>
                         </div>
                     </Col>
@@ -161,11 +163,11 @@ class Task extends React.Component {
                                 {
                                     task.description ?
                                         <Fragment>
-                                            <h3 className="tc">Description</h3>
+                                            <h3 className="tc"><FormattedMessage id="pages.task.title.description" /></h3>
                                             <div dangerouslySetInnerHTML={{ __html: task.description }} />
                                         </Fragment>
                                         :
-                                        <Empty description={"Il n'y a pas de description"}/>
+                                        <Empty description={<FormattedMessage id="pages.task.description.empty" />}/>
                                 }
                             </Card>
                         </Col>
@@ -173,7 +175,7 @@ class Task extends React.Component {
                 </div>
                 <Row>
                     <div className="flex flex-row flex-auto justify-center items-center mt1" style={{padding: "15px 0px"}}>
-                        <Button type="primary" icon="dashboard" size={"default"}>Démarrer timer</Button>
+                        <Button type="primary" icon="dashboard" size={"default"}><FormattedMessage id="pages.task.timer.start"/></Button>
                     </div>
                 </Row>
             </div>

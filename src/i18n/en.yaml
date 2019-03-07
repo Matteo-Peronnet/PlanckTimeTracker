@@ -1,0 +1,41 @@
+pages:
+  login:
+    title: "Connection"
+    connexion: "Login"
+  project:
+    sprints:
+      select: "Select a sprint"
+      empty: "There are no sprints"
+    tickets:
+      empty: "There are no tickets"
+  task:
+    title:
+      information: "Information"
+      description: "Description"
+    assign: "Assign yourself"
+    type: "Type"
+    createdBy: "Created by"
+    assignTo: "Assigned to"
+    time:
+      spent: "Time spent"
+      estimated: "Estimated time"
+    description:
+      empty: "There is no description"
+    timer:
+      start: "Start timer"
+
+components:
+  userStory:
+    empty: "There is no User Story"
+  header:
+    menu:
+      language:
+        title: "Language"
+        select:
+          fr: "fr"
+          en: "en"
+      disconnect:
+        title: "Disconnect"
+form:
+  errors:
+    userTokenRequired: "Please enter your token"

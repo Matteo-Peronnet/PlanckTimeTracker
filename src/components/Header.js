@@ -6,17 +6,21 @@ import connect from "react-redux/es/connect/connect";
 import { Icon, Menu, Dropdown } from 'antd';
 import withUser from "../routes/withUser";
 import Avatar from "./Avatar";
-import * as actions from '../store/ducks/user';
+import * as userActions from '../store/ducks/user';
+import * as intlActions from '../store/ducks/intl';
+import { injectIntl, FormattedMessage } from 'react-intl'
 
 const SubMenu = Menu.SubMenu;
 
 @connect(
     state => ({
-        user: state.user
+        user: state.user,
+        intl: state.intl
     }),
-    actions
+    ({...userActions, ...intlActions})
 )
 @withUser
+@injectIntl
 export default class Header extends Component {
 
     static propTypes = {
@@ -24,14 +28,13 @@ export default class Header extends Component {
     }
 
     renderMenu = () => (
-        <Menu>
-            <Menu.Item>1st menu item</Menu.Item>
-            <SubMenu title="sub menu">
-                <Menu.Item>3rd menu item</Menu.Item>
-                <Menu.Item>4th menu item</Menu.Item>
+        <Menu key="menu">
+            <SubMenu key="language" title={[<Icon key="icon" type="flag" />, <FormattedMessage key="language.title" id="components.header.menu.language.title" />]}>
+                <Menu.Item key="fr" onClick={() => this.props.updateIntlRequest('fr')} disabled={this.props.intl.locale === 'fr'}><FormattedMessage id="components.header.menu.language.select.fr" /></Menu.Item>
+                <Menu.Item key="en" onClick={() => this.props.updateIntlRequest('en')} disabled={this.props.intl.locale === 'en'}><FormattedMessage id="components.header.menu.language.select.en" /></Menu.Item>
             </SubMenu>
-            <Menu.Divider />
-            <Menu.Item onClick={() => this.props.logoutRequest()}><Icon type="disconnect" /> Se déconnecter</Menu.Item>
+            <Menu.Divider key="divider" />
+            <Menu.Item key="disconnect" onClick={() => this.props.logoutRequest()}><Icon key="disconnect" type="disconnect" /> <FormattedMessage key="disconnect.title" id="components.header.menu.disconnect.title" /></Menu.Item>
         </Menu>
     );
 
@@ -51,7 +54,7 @@ export default class Header extends Component {
                     {
                         user.isLogged && (
                         <Dropdown overlay={this.renderMenu}>
-                            <a className="ant-dropdown-link" href="#">
+                            <a className="ant-dropdown-link">
                                 <Avatar userId={user.id}/>
                             </a>
                         </Dropdown>

@@ -80,7 +80,6 @@ export function loginFailure(payload) {
 }
 
 export const logoutRequest = () => dispatch => {
-    console.log('hi')
     ipcRenderer.send('deleteToken');
     ipcRenderer.on('deleteTokenResult', (event) => {
         dispatch({ type: LOGOUT_SUCCESS });

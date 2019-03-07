@@ -47,7 +47,12 @@ module.exports = {
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
                 use: 'url-loader'
-            }
+            },
+            // YAML
+            {
+                test: /\.yaml$/,
+                use: [{ loader: 'json-loader' }, { loader: 'yaml-loader' }],
+            },
         ],
         loaders: [
             {

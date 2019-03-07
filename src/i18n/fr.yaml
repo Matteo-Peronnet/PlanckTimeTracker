@@ -1,0 +1,41 @@
+pages:
+  login:
+    title: "Connexion"
+    connexion: "Se connecter"
+  project:
+    sprints:
+      select: "Séléctionner un sprint"
+      empty: "Il n'y a pas de sprints"
+    tickets:
+      empty: "Il n'y a pas de tickets"
+  task:
+    title:
+      information: "Information"
+      description: "Description"
+    assign: "S'assigner"
+    type: "Type"
+    createdBy: "Crée par"
+    assignTo: "Assigné à"
+    time:
+      spent: "Temps passé"
+      estimated: "Temps estimé"
+    description:
+      empty: "Il n'y a pas de description"
+    timer:
+      start: "Démarrer timer"
+
+components:
+  userStory:
+    empty: "Il n'y a pas d'User Story"
+  header:
+    menu:
+      language:
+        title: "Langue"
+        select:
+          fr: "fr"
+          en: "en"
+      disconnect:
+        title: "Deconnexion"
+form:
+  errors:
+    userTokenRequired: "Veuillez saisir votre token"

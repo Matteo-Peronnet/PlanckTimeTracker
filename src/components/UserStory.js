@@ -4,6 +4,7 @@ import { Empty, Collapse } from 'antd';
 import TaskList from './TaskList'
 import Tag from "./Tag";
 import { connect } from 'react-redux';
+import {FormattedMessage, injectIntl} from "react-intl";
 
 const Panel = Collapse.Panel;
 
@@ -17,6 +18,7 @@ const order = ['todo', 'wip', 'done'];
     dispatch => ({
     }),
 )
+@injectIntl
 class UserStory extends React.Component {
 
     static propTypes = {
@@ -40,7 +42,7 @@ class UserStory extends React.Component {
             <div>
                 {
                 userStories.length === 0 ?
-                    (<Empty description="Il n'y a pas d'User Story"/>)
+                    (<Empty description={<FormattedMessage id="components.userStory.empty" />}/>)
                     :
                     <div className={"flex flex-auto flex-column w-100 h-100 mt3"}>
                         <Collapse accordion>
@@ -57,7 +59,7 @@ class UserStory extends React.Component {
                                     >
                                     {
                                         (userStorie.tasks.length === 0) ?
-                                            (<Empty description="Il n'y a pas de tickets"/>)
+                                            (<Empty description={<FormattedMessage id="pages.project.tickets.empty" />}/>)
                                         :
                                             <TaskList taskType="usTasks" tasks={userStorie.tasks.map((id) => usTasks[id])}/>
                                     }

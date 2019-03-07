@@ -8,6 +8,7 @@ import TaskList from '../../../components/TaskList'
 import UserStory from '../../../components/UserStory'
 import {Ov} from "../../../utils";
 import isPrivate from "../../../routes/isPrivate";
+import { injectIntl, FormattedMessage } from 'react-intl'
 
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
@@ -58,6 +59,7 @@ const TabPane = Tabs.TabPane;
     }),
 )
 @isPrivate
+@injectIntl
 class Project extends React.Component {
 
     constructor(props) {
@@ -91,10 +93,10 @@ class Project extends React.Component {
                 <TabPane tab={<Icon type="interation" theme="filled" style={{fontSize: '28px', color: '#3d324c' }} />} key="1">
                     {
                         (sprints.length === 0) ?
-                            (<Empty description="Il n'y a pas de sprints"/>)
+                            (<Empty description={<FormattedMessage id="pages.project.sprints.empty" />}/>)
                             :
                         <div className="flex flex-auto items-center justify-center flex-column">
-                            <Select placeholder="Séléctionner un sprint" style={{width: 220}} onChange={this.handleChange}>
+                            <Select placeholder={<FormattedMessage id="pages.project.sprints.select" />} style={{width: 220}} onChange={this.handleChange}>
                                 {
                                     sprints.map((sprint) => <Option key={sprint.id} value={sprint.id}>{sprint.name}</Option>)
                                 }
@@ -110,7 +112,7 @@ class Project extends React.Component {
                 <TabPane tab={<Icon type="project" theme="filled" style={{ fontSize: '28px', color: '#3d324c' }} />} key="2">
                     {
                         (tasks.length === 0) ?
-                            (<Empty description="Il n'y a pas de tickets"/>)
+                            (<Empty description={<FormattedMessage id="pages.project.tickets.empty" />} />)
                             :
                             <TaskList taskType="tasks" tasks={tasks} />
                     }
@@ -118,7 +120,7 @@ class Project extends React.Component {
                 <TabPane tab={<Icon type="hdd" theme="filled" style={{ fontSize: '28px', color: '#3d324c' }} />} key="3">
                     {
                         (tasks.length === 0) ?
-                            (<Empty description="Il n'y a pas de tickets"/>)
+                            (<Empty description={<FormattedMessage id="pages.project.tickets.empty" />} />)
                             :
                             <TaskList taskType="supportTasks" tasks={supportTasks} />
                     }
