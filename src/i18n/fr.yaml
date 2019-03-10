@@ -43,3 +43,5 @@ components:
 form:
   errors:
     userTokenRequired: "Veuillez saisir votre token"
+    connectionError: "Échec de la connexion"
+    invalidToken: "Le token saisie est invalide"

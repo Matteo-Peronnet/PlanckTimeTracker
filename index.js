@@ -26,19 +26,23 @@ app.on('ready', () => {
     const iconPath = path.join(__dirname, `src/assets/${iconName}`);
     tray = new PlanckTray(iconPath, mainWindow);
 
-    ipcMain.on('getToken', (event, arg) => {
-        keytar.getPassword('PlanckTimeTracker', 'Planck').then((res) => {
-                event.sender.send('getTokenResult', res)
-        });
+});
+
+ipcMain.on('getToken', (event, arg) => {
+    keytar.getPassword('PlanckTimeTracker', 'Planck').then((res) => {
+        event.sender.send('getTokenResult', res)
     });
-    ipcMain.on('setToken', (event, arg) => {
-        keytar.setPassword('PlanckTimeTracker', 'Planck', arg).then(() => {
-            event.sender.send('setTokenResult');
-        });
+});
+ipcMain.on('setToken', (event, arg) => {
+    keytar.setPassword('PlanckTimeTracker', 'Planck', arg).then(() => {
+        event.sender.send('setTokenResult');
     });
-    ipcMain.on('deleteToken', (event, arg) => {
-        keytar.deletePassword('PlanckTimeTracker', 'Planck').then(() => {
-            event.sender.send('deleteTokenResult');
-        });
+});
+ipcMain.on('deleteToken', (event, arg) => {
+    keytar.deletePassword('PlanckTimeTracker', 'Planck').then(() => {
+        event.sender.send('deleteTokenResult');
     });
+});
+ipcMain.on('update-timer', (event, timeLeft) => {
+    tray.setTitle(timeLeft);
 });

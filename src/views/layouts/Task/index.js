@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import {getProjectRequest, getCustomersRequest} from "../../../store/ducks/planck";
+import {startTimerRequest} from "../../../store/ducks/timer";
 import { Button, Card, Empty, Divider, Row, Col, Icon, Progress} from "antd";
 import TimeAgo from 'react-timeago';
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
@@ -12,6 +13,7 @@ import { openUrl } from "../../../utils";
 import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
 import { injectIntl, FormattedMessage } from 'react-intl'
+import {loginRequest} from "../../../store/ducks/user";
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -51,14 +53,25 @@ const formatter = buildFormatter(frenchStrings)
             customer: state.planck.entities.customers[customerId],
             project: state.planck.entities.projects[projectId],
             task: state.planck.entities[taskType][taskId],
+            customerId, projectId, taskType, taskId
         })
     },
     dispatch => ({
+        startTimer: (payload) => dispatch(startTimerRequest(payload))
     }),
 )
 @isPrivate
 @injectIntl
 class Task extends React.Component {
+
+    handleStartTimer = () => {
+        this.props.startTimer({
+            customerId: this.props.customerId,
+            projectId: this.props.projectId,
+            taskType: this.props.taskType,
+            taskId: this.props.taskId
+        })
+    }
 
     render() {
         const { task, customer, project } = this.props;
@@ -175,7 +188,7 @@ class Task extends React.Component {
                 </div>
                 <Row>
                     <div className="flex flex-row flex-auto justify-center items-center mt1" style={{padding: "15px 0px"}}>
-                        <Button type="primary" icon="dashboard" size={"default"}><FormattedMessage id="pages.task.timer.start"/></Button>
+                        <Button type="primary" icon="dashboard" size={"default"} onClick={() => this.handleStartTimer()}><FormattedMessage id="pages.task.timer.start"/></Button>
                     </div>
                 </Row>
             </div>

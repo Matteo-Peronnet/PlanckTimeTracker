@@ -7,6 +7,7 @@ import { ofType, combineEpics } from 'redux-observable'
 import {login} from "../services/authentication";
 import { openNotificationByType } from '../../utils'
 import {ipcRenderer} from "electron";
+import {intl} from "../../i18n";
 
 const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
 const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
@@ -110,7 +111,7 @@ export function loginFailureEpic(action$) {
     return action$.pipe(
         ofType(LOGIN_FAILURE),
         mergeMap(() => {
-            openNotificationByType('error', 'Échec de la connexion', 'Le token saisie est invalide')
+            openNotificationByType('error', intl.formatMessage({ id: 'form.errors.connectionError' }), intl.formatMessage({ id: 'form.errors.invalidToken' }))
             return NEVER
         }),
     )

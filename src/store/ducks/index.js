@@ -5,6 +5,7 @@ import { reducer as reduxAsyncConnect } from 'redux-connect'
 import { reducer as planckReducer } from './planck'
 import { reducer as userReducer, epic as userEpic } from './user'
 import { reducer as intlReducer } from './intl'
+import { reducer as timerReducer, epic as timerEpic} from './timer'
 
 export default (history) =>  combineReducers({
     reduxAsyncConnect,
@@ -12,8 +13,10 @@ export default (history) =>  combineReducers({
     planck: planckReducer,
     user: userReducer,
     intl: intlReducer,
+    timer: timerReducer
 }, window.__data)
 
 export const epic = combineEpics(
-    userEpic
+    userEpic,
+    timerEpic
 )
