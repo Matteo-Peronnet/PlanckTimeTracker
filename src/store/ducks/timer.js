@@ -6,6 +6,8 @@ import {replace} from "connected-react-router";
 
 const START_TIMER_REQUEST = "timer/START_TIMER_REQUEST"
 
+const RESTORE_TIMER_REQUEST = "timer/RESTORE_TIMER_REQUEST"
+
 // Reducer
 const INITIAL_STATE = {
     target: {
@@ -13,21 +15,29 @@ const INITIAL_STATE = {
         projectId: null,
         taskType: null,
         taskId: null,
-        totalTime: null
+        totalTime: 0
+    },
+    timer: {
+        active: false,
+        initialDuration: 0,
+        unit: "minutes",
+        display: "",
+        pause: false,
     }
 }
 
 export function reducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
+        case RESTORE_TIMER_REQUEST:
+            return {
+                ...action.payload
+            }
         case START_TIMER_REQUEST: {
             return {
                 ...state,
                 target: {
                     ...state.target,
-                    customerId: action.customerId,
-                    projectId: action.projectId,
-                    taskType: action.taskType,
-                    taskId: action.taskId
+                    ...action.payload
                 }
             }
         }
@@ -40,10 +50,14 @@ export function reducer(state = INITIAL_STATE, action = {}) {
 export function startTimerRequest(payload) {
     return {
         type: START_TIMER_REQUEST,
-        customerId: payload.customerId,
-        projectId: payload.projectId,
-        taskType: payload.taskType,
-        taskId: payload.taskId
+        payload
+    }
+}
+
+export function restoreTimerRequest(payload) {
+    return {
+        type: RESTORE_TIMER_REQUEST,
+        payload
     }
 }
 
@@ -55,7 +69,7 @@ export const epic = combineEpics(
 
 export function startTimerRequestEpic(action$, state$) {
     return action$.pipe(
-        ofType(START_TIMER_REQUEST),
+        ofType(START_TIMER_REQUEST, RESTORE_TIMER_REQUEST),
         mergeMap(() => {
             return of(replace('/timer'));
         })

@@ -1,5 +1,7 @@
 import { schema } from 'normalizr';
 
+export const timeSpentTypeSchema = new schema.Entity('timeSpentTypes')
+
 export const usTaskSchema = new schema.Entity('usTasks')
 export const taskSchema = new schema.Entity('tasks')
 export const supportTaskSchema = new schema.Entity('supportTasks')

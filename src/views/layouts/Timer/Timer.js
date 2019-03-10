@@ -4,18 +4,17 @@ import "moment-duration-format";
 class Timer {
     constructor(config) {
         const {
-            duration,
+            initialDuration,
             unit,
             onDisplayChange,
         } = this.validateConfigObject(config);
 
-        this.initialDuration = this.getInitialDuration(duration, unit);
+        this.initialDuration = this.getInitialDuration(initialDuration, unit);
         this.duration = this.initialDuration;
-        this.delay = 1000;
+        this.delay = 100;
         this.display = this.getTimeDisplay();
         this.interval = null;
         this.startTime = null;
-        this.isPaused = false;
         this.onDisplayChange = onDisplayChange;
     }
 
@@ -23,10 +22,8 @@ class Timer {
         if (!this.interval) {
             this.startTime = moment();
             this.interval = setInterval(() => {
-                if (!this.isPaused) {
-                    this.duration += this.delay;
-                    this.updateDisplay();
-                }
+                this.duration += this.delay;
+                this.updateDisplay();
             }, this.delay);
             return cb ? cb() : null;
         }
@@ -38,16 +35,6 @@ class Timer {
             this.interval = null;
             return cb ? cb() : null;
         }
-    }
-
-    pause(cb) {
-        this.isPaused = true;
-        return cb ? cb() : null;
-    }
-
-    restart(cb) {
-        this.isPaused = false;
-        return cb ? cb() : null;
     }
 
     reset() {
@@ -70,14 +57,14 @@ class Timer {
     }
 
     getTimeDisplay() {
-        return moment.duration(this.duration).format("hh:mm:ss", { trim: false });
+        return moment.duration(this.duration).format("hh:mm", { trim: false });
     }
 
     validateConfigObject(config) {
         const { unit, onDisplayChange } = config;
 
-        const duration = parseInt(config.duration);
-        if (typeof duration !== "number") {
+        const initialDuration = parseInt(config.initialDuration);
+        if (typeof initialDuration !== "number") {
             throw new TypeError("Timer class requires duration = Number");
         }
 
@@ -93,7 +80,7 @@ class Timer {
             );
         }
 
-        return { duration, unit, onDisplayChange };
+        return { initialDuration, unit, onDisplayChange };
     }
 }
 

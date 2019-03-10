@@ -25,7 +25,12 @@ app.on('ready', () => {
     const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'default-icon.png';
     const iconPath = path.join(__dirname, `src/assets/${iconName}`);
     tray = new PlanckTray(iconPath, mainWindow);
+});
 
+app.on('before-quit', (event) => {
+    //event.preventDefault();
+    //console.log('I WILL QUIT')
+    //event.quit();
 });
 
 ipcMain.on('getToken', (event, arg) => {

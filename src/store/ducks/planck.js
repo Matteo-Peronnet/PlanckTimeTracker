@@ -2,16 +2,21 @@ import { ajax } from 'rxjs/ajax'
 import { normalize, denormalize } from 'normalizr';
 import { getCustomers } from '../services/customer';
 import { map, catchError } from 'rxjs/operators';
-import {boardSchema, customersSchema, projectSchema} from "../schemas";
+import {timeSpentTypeSchema, customersSchema, projectSchema} from "../schemas";
 import {getProject} from "../services/task";
+import {getTimeSpentType} from "../services/timeSpentType";
 
 const GET_CUSTOMERS_REQUEST = 'customer/GET_CUSTOMERS_REQUEST';
 const GET_CUSTOMERS_FAILURE = 'customer/GET_CUSTOMERS_FAILURE';
 const GET_CUSTOMERS_SUCCESS = 'customer/GET_CUSTOMERS_SUCCESS';
 
-const GET_PROJECT_REQUEST = 'customer/GET_PROJECT_REQUEST';
-const GET_PROJECT_FAILURE = 'customer/GET_PROJECT_FAILURE';
-const GET_PROJECT_SUCCESS = 'customer/GET_PROJECT_SUCCESS';
+const GET_PROJECT_REQUEST = 'project/GET_PROJECT_REQUEST';
+const GET_PROJECT_FAILURE = 'project/GET_PROJECT_FAILURE';
+const GET_PROJECT_SUCCESS = 'project/GET_PROJECT_SUCCESS';
+
+const GET_TIME_SPENT_TYPES_REQUEST = 'timeSpentType/GET_TIME_SPENT_TYPES_REQUEST';
+const GET_TIME_SPENT_TYPES_FAILURE = 'timeSpentType/GET_TIME_SPENT_TYPES_FAILURE';
+const GET_TIME_SPENT_TYPES_SUCCESS = 'timeSpentType/GET_TIME_SPENT_TYPES_SUCCESS';
 
 
 // Initial state
@@ -23,14 +28,15 @@ const INITIAL_STATE = {
         userStories: {},
         usTasks: {},
         tasks: {},
-        supportTasks: {}
+        supportTasks: {},
+        timeSpentTypes: {}
     }
 }
 
 // Reducer
 export function reducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
-
+        case GET_TIME_SPENT_TYPES_SUCCESS:
         case GET_PROJECT_SUCCESS:
         case GET_CUSTOMERS_SUCCESS:
             return {
@@ -64,6 +70,10 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                     supportTasks: {
                         ...state.entities.supportTasks,
                         ...action.result.entities.supportTasks
+                    },
+                    timeSpentTypes: {
+                        ...state.entities.timeSpentTypes,
+                        ...action.result.entities.timeSpentTypes
                     }
                 },
             }
@@ -93,6 +103,18 @@ export function getProjectRequest(id) {
                         ...res.response
                     }
                 }, [projectSchema])
+            ),
+            catchError((error) => Promise.reject(error)),
+        ).toPromise()
+    }
+}
+
+export function getTimeSpentTypesRequest() {
+    return {
+        types: [GET_TIME_SPENT_TYPES_REQUEST, GET_TIME_SPENT_TYPES_SUCCESS, GET_TIME_SPENT_TYPES_FAILURE],
+        promise: (getState) => ajax(getTimeSpentType(getState().user.token)).pipe(
+            map((res) =>
+                normalize(res.response, [timeSpentTypeSchema])
             ),
             catchError((error) => Promise.reject(error)),
         ).toPromise()

@@ -5,27 +5,31 @@ import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
 import { injectIntl, FormattedMessage } from 'react-intl'
 import { ipcRenderer } from "electron";
+import { Statistic } from 'antd';
+import { store } from "../../../i18n";
+
 import TimeTracker from "./Timer";
-
-
-const INITIAL_STATE = {
-    timer: {
-        active: false,
-        time: 1000,
-        unit: "minutes",
-        display: ""
-    }
-};
+import {Ov} from "../../../utils";
+import {getTimeSpentTypesRequest} from "../../../store/ducks/planck";
 
 @asyncConnect([
     {
         promise: ({ store: { dispatch, getState } }) => {
+            const {planck: {entities: {timeSpentTypes}}} = getState();
+
+            const promises = [];
+
+            if (Ov(timeSpentTypes).length === 0) {
+                promises.push(dispatch(getTimeSpentTypesRequest()));
+            }
+
+            return Promise.all(promises);
         },
     },
 ])
 @connect(
     (state) => ({
-        task: state.timer.target
+        timer: state.timer
     }),
     dispatch => ({
     }),
@@ -38,21 +42,22 @@ class Timer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ...null /* RETRIEVE TIMER IN STORAGE */ || INITIAL_STATE,
-            target: {
-                ...props.task
-            }
-        };
+            ...props.timer
+        }
     }
 
     componentDidMount() {
         this.initializeTimer();
-        this.handleTimerStart();
+        this.handleInitialValues();
+        if(!this.state.timer.pause){
+            this.handleTimerStart();
+        }
     }
 
 
     componentWillUnmount() {
         this.timer.stop();
+        this.saveTimerInStorage();
         this.resetTimerTray();
     }
 
@@ -68,49 +73,50 @@ class Timer extends React.Component {
     };
     // --------- ELECTRON EVENT ---------
 
-    initializeTimer(timerSettings = {}) {
-        const { time, unit } = timerSettings;
+    initializeTimer() {
         const timerConfig = {
-            duration: time || this.state.timer.time,
-            unit: unit || this.state.timer.unit,
+            initialDuration: this.state.timer.initialDuration,
+            unit: this.state.timer.unit,
             onDisplayChange: this.handleTimerUpdate,
         };
         this.timer = new TimeTracker(timerConfig);
     }
 
-    handleActivation = () => {
-        this.initializeTimer();
+    handleInitialValues () {
         this.setState({
+            ...this.state,
             timer: {
                 ...this.state.timer,
-                display: this.timer.display,
-                isPaused: this.timer.isPaused
+                display: this.timer.getTimeDisplay()
             }
         });
-    };
+        this.updateTrayText(this.state.timer.display)
+    }
 
     handleTimerStart = () => {
         this.timer.start(() => {
             // sending a callback so there is no delay in rendering start/stop buttons
             this.setState({
-                timer: { ...this.state.timer, active: true }
+                timer: { ...this.state.timer, active: true, pause: false }
             });
         });
     };
 
     handleTimerPause = () => {
-        this.timer.pause(() => {
+        this.timer.stop(() => {
             this.setState({
-                timer: { ...this.state.timer, isPaused: true }
-            })
-        });
-    }
-    handleTimerRestart = () => {
-        this.timer.restart(() => {
-            this.setState({
-                timer: { ...this.state.timer, isPaused: false }
-            })
-        });
+                ...this.state,
+                target: {
+                    ...this.state.target,
+                    totalTime: 0
+                },
+                timer: {
+                    ...this.state.timer,
+                    initialDuration: this.state.timer.initialDuration + this.state.target.totalTime,
+                    pause: true
+                }
+            });
+        })
     }
 
     handleTimerStop = () => {
@@ -138,18 +144,35 @@ class Timer extends React.Component {
         this.updateTrayText(newDisplay);
     };
 
+    saveTimerInStorage = () => {
+        store.set('timer', {
+            ...this.state,
+            target: {
+                ...this.state.target,
+                totalTime: 0
+            },
+            timer: {
+                ...this.state.timer,
+                initialDuration: this.state.timer.initialDuration + this.state.target.totalTime,
+                pause: true
+            }
+        });
+    }
+
     render() {
 
         const { timer } = this.state;
 
         return (
             <Fragment>
-                <div>{timer.display}</div>
+                <div>
+                    <Statistic title="Temps passé" value={timer.display} />
+                </div>
                 {
-                    !timer.isPaused ?
+                    !timer.pause ?
                         <button onClick={() => this.handleTimerPause()}>PAUSE</button>
                         :
-                        <button onClick={() => this.handleTimerRestart()}>REPRENDRE</button>
+                        <button onClick={() => this.handleTimerStart()}>REPRENDRE</button>
                 }
             </Fragment>
         );
