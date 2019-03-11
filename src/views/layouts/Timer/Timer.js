@@ -4,6 +4,7 @@ import "moment-duration-format";
 class Timer {
     constructor(config) {
         const {
+            delay,
             initialDuration,
             unit,
             onDisplayChange,
@@ -11,7 +12,7 @@ class Timer {
 
         this.initialDuration = this.getInitialDuration(initialDuration, unit);
         this.duration = this.initialDuration;
-        this.delay = 100;
+        this.delay = delay;
         this.display = this.getTimeDisplay();
         this.interval = null;
         this.startTime = null;
@@ -80,7 +81,15 @@ class Timer {
             );
         }
 
-        return { initialDuration, unit, onDisplayChange };
+        const availableDelay = {
+            seconds: 60,
+            minutes: 60000,
+            hours: 216000000
+        }
+
+        const delay = availableDelay[unit];
+
+        return { delay, initialDuration, unit, onDisplayChange };
     }
 }
 
