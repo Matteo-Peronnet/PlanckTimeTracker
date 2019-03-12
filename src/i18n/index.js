@@ -7,7 +7,7 @@ import dotize from 'dotize'
 import fr from './fr.yaml'
 import en from './en.yaml'
 
-export const store = new Store();
+export const storage = new Store();
 
 const fallback = 'fr'
 const availables = [
@@ -15,7 +15,7 @@ const availables = [
     'en',
 ]
 
-const current = store.get('locale')
+const current = storage.get('locale')
 
 export const locale = availables.includes(current) ? current : fallback
 export const messages = {
@@ -23,7 +23,7 @@ export const messages = {
     en: dotize.convert(en),
 }
 
-store.set('locale', locale);
+storage.set('locale', locale);
 
 addLocaleData([
     ...frLocaleData,

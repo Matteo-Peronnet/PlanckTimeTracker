@@ -17,6 +17,7 @@ class Timer {
         this.interval = null;
         this.startTime = null;
         this.onDisplayChange = onDisplayChange;
+        this.onDisplayChange(this.display)
     }
 
     start(cb) {

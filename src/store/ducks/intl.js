@@ -1,6 +1,6 @@
 import { locale, messages } from '../../i18n'
 import { updateIntl } from 'react-intl-redux'
-import { store } from '../../i18n/index'
+import { storage } from '../../i18n/index'
 const INTL_UPDATE = "@@intl/UPDATE"
 
 // Reducer
@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     locale: locale,
     messages: messages[locale],
 }
+
 
 export function reducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
@@ -30,5 +31,5 @@ export const updateIntlRequest = lang => dispatch => {
             messages: messages[lang],
         })
     )
-    store.set('locale', lang)
+    storage.set('locale', lang)
 };

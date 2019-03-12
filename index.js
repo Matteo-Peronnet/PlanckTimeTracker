@@ -6,8 +6,10 @@ const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 const { app, ipcMain } = electron;
+
 let mainWindow;
 let tray;
+let canClose = false;
 
 process.setMaxListeners(Infinity);
 
@@ -25,13 +27,15 @@ app.on('ready', () => {
     const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'default-icon.png';
     const iconPath = path.join(__dirname, `src/assets/${iconName}`);
     tray = new PlanckTray(iconPath, mainWindow);
+
+    mainWindow.on('close', (event) => {
+        if (!canClose) {
+            event.preventDefault();
+            mainWindow.webContents.send('closeAppRequest');
+        }
+    });
 });
 
-app.on('before-quit', (event) => {
-    //event.preventDefault();
-    //console.log('I WILL QUIT')
-    //event.quit();
-});
 
 ipcMain.on('getToken', (event, arg) => {
     keytar.getPassword('PlanckTimeTracker', 'Planck').then((res) => {
@@ -51,3 +55,8 @@ ipcMain.on('deleteToken', (event, arg) => {
 ipcMain.on('update-timer', (event, timeLeft) => {
     tray.setTitle(timeLeft);
 });
+
+ipcMain.on('closeApp', (event) => {
+    canClose = true;
+    app.quit();
+})

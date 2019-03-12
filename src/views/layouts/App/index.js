@@ -9,7 +9,7 @@ import { Spin } from 'antd';
 import {asyncConnect} from "redux-connect";
 import {ipcRenderer} from "electron";
 import withUser from "../../../routes/withUser";
-import {store} from "../../../i18n";
+import {storage} from "../../../i18n";
 
 let firstAsyncConnect = false;
 
@@ -27,8 +27,7 @@ let firstAsyncConnect = false;
             });
             return Promise.all(promises).then(() => {
                 // Check if we have a timer that has been started previously and we are connected
-                console.log(pathname)
-                const timerStored = store.get('timer');
+                const timerStored = storage.get('timer');
                 if (pathname !== '/login' && timerStored) {
                     dispatch(restoreTimerRequest(timerStored))
                 }
@@ -43,9 +42,6 @@ let firstAsyncConnect = false;
 )
 @withUser
 export default class App extends Component {
-
-    static propTypes = {
-    };
 
     render() {
         const { route, loaded } = this.props;

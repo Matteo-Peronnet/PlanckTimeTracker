@@ -7,14 +7,15 @@ import { ofType, combineEpics } from 'redux-observable'
 import {login} from "../services/authentication";
 import { openNotificationByType } from '../../utils'
 import {ipcRenderer} from "electron";
-import {intl} from "../../i18n";
+import {intl, storage} from "../../i18n";
+import {resetTimer} from "./timer";
 
-const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
-const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
-const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
+export const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
+export const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
+export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
 
-const LOGOUT_REQUEST = 'user/LOGOUT_REQUEST';
-const LOGOUT_SUCCESS = 'user/LOGOUT_SUCCESS';
+export const LOGOUT_REQUEST = 'user/LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'user/LOGOUT_SUCCESS';
 
 // Initial state
 const INITIAL_STATE = {
@@ -83,7 +84,9 @@ export function loginFailure(payload) {
 export const logoutRequest = () => dispatch => {
     ipcRenderer.send('deleteToken');
     ipcRenderer.on('deleteTokenResult', (event) => {
+        storage.delete('timer')
         dispatch({ type: LOGOUT_SUCCESS });
+        dispatch(resetTimer());
     });
 };
 

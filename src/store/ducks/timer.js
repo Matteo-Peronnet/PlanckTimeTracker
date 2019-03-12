@@ -1,12 +1,13 @@
 import {combineEpics, ofType} from "redux-observable";
 import {mergeMap} from "rxjs/operators";
 import {ipcRenderer} from "electron";
-import {of} from "rxjs";
+import {of, NEVER} from "rxjs";
 import {replace} from "connected-react-router";
-
+import {storage} from "../../i18n";
+import { LOGOUT_SUCCESS } from './user';
 const START_TIMER_REQUEST = "timer/START_TIMER_REQUEST"
-
 const RESTORE_TIMER_REQUEST = "timer/RESTORE_TIMER_REQUEST"
+const RESET_TIMER = "timer/RESET_TIMER"
 
 // Reducer
 const INITIAL_STATE = {
@@ -21,7 +22,7 @@ const INITIAL_STATE = {
         active: false,
         initialDuration: 0,
         unit: "minutes",
-        display: "",
+        display: null,
         pause: false,
     }
 }
@@ -40,6 +41,11 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                     ...action.payload
                 }
             }
+        }
+        case RESET_TIMER: {
+            return {
+                ...INITIAL_STATE
+            };
         }
         default:
             return state
@@ -61,9 +67,15 @@ export function restoreTimerRequest(payload) {
     }
 }
 
+export function resetTimer() {
+    return {
+        type: RESET_TIMER,
+    }
+}
+
 
 export const epic = combineEpics(
-    startTimerRequestEpic
+    startTimerRequestEpic,
 )
 
 

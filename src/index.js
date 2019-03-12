@@ -9,6 +9,9 @@ import { renderRoutes } from 'react-router-config';
 import { ReduxAsyncConnect } from 'redux-connect';
 import store, {history} from './store'
 import routes from './routes/routes';
+import events from './events';
+
+events(store)
 
 ReactDOM.render(
     <ReduxProvider store={store}>

@@ -13,3 +13,5 @@ export const openNotificationByType = (type, title, message) => {
         duration: 2
     });
 };
+
+export const isInTimerView = (state) => state.router.location.pathname === '/timer'
