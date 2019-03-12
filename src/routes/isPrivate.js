@@ -12,9 +12,10 @@ const isPrivate = WrappedComponent => {
     return compose(
         connect((state, props) => ({
             isLogged: state.user.isLogged,
+            pathname: state.router.location.pathname
         })),
         branch( props => {
-                if(!props.isLogged){
+                if(!props.isLogged && props.pathname !== '/login'){
                     props.dispatch(push('/login'))
                 }
                 return props.isLogged

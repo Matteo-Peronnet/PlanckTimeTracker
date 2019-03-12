@@ -33,6 +33,10 @@ import isPrivate from "../../../routes/isPrivate";
 @isPrivate
 class Home extends React.Component {
 
+    constructor(props) {
+        super(props)
+    }
+
     customerMenuProject = (customer) =>
         (
             <Menu>

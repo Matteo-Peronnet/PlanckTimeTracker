@@ -3,16 +3,19 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
-import {getTimeSpentTypesRequest} from "../../../store/ducks/planck";
+import { getTimeSpentTypesRequest } from "../../../store/ducks/planck";
+import { resetTimer } from "../../../store/ducks/timer";
 import { ipcRenderer } from "electron";
 import {FormattedMessage, injectIntl} from 'react-intl'
-import { Steps, Form} from 'antd';
+import { Steps, Form, Button, Popconfirm} from 'antd';
 import { storage } from "../../../i18n";
 import TimeTracker from "./Timer";
 import {Ov} from "../../../utils";
 import TimerStep from './TimerStep';
 import Tracker from './Steps/Tracker';
 import TimerInformation from './Steps/TimerInformation';
+import withUser from "../../../routes/withUser";
+import {push} from "connected-react-router";
 const Step = Steps.Step;
 
 @asyncConnect([
@@ -21,6 +24,11 @@ const Step = Steps.Step;
             const {planck: {entities: {timeSpentTypes}}} = getState();
 
             const promises = [];
+
+            const {
+                planck: {entities: { projects }},
+                timer: {target: {projectId}}
+            } = getState();
 
             if (Ov(timeSpentTypes).length === 0) {
                 promises.push(dispatch(getTimeSpentTypesRequest()));
@@ -40,6 +48,7 @@ const Step = Steps.Step;
 )
 @isPrivate
 @injectIntl
+@withUser
 @withRouter
 class Timer extends React.Component {
 
@@ -47,7 +56,8 @@ class Timer extends React.Component {
         super(props);
         this.state = {
             ...props.timer,
-            stepIndex: 0
+            stepIndex: 0,
+            saveTimer: true
         }
 
         // --------- ELECTRON EVENT ---------
@@ -65,7 +75,9 @@ class Timer extends React.Component {
 
     componentWillUnmount() {
         this.timer.stop();
-        this.saveTimerInStorage();
+        if (this.state.saveTimer) {
+            this.saveTimerInStorage();
+        }
         this.resetTimerTray();
     }
 
@@ -191,9 +203,20 @@ class Timer extends React.Component {
         });
     }
 
+    leaveTimer = () => {
+        this.setState({
+            ...this.state,
+            saveTimer: false
+        }, () => {
+            storage.delete('timer');
+            this.props.dispatch(resetTimer())
+            this.props.dispatch(push('/'))
+        })
+    }
+
     render() {
         const { display, timer, stepIndex } = this.state;
-        const { timeSpentTypes, form } = this.props;
+        const { timeSpentTypes, form, task } = this.props;
         const styleStepsContent = {
             marginTop: "16px",
             border: "1px dashed #e9e9e9",
@@ -208,7 +231,12 @@ class Timer extends React.Component {
         }
 
         return (
-            <div className="mt3 flex flex-auto flex-column">
+            <div className="flex flex-auto flex-column">
+                <div className="flex flex-auto items-center justify-end" style={{padding: '0 15px'}}>
+                    <Popconfirm placement="bottomRight" title={<FormattedMessage id="pages.timer.delete" />} onConfirm={this.leaveTimer} okText={<FormattedMessage id="shared.yes" />} cancelText={<FormattedMessage id="shared.no" />}>
+                        <Button type="danger" shape="circle" icon="close" size="default" />
+                    </Popconfirm>
+                </div>
                 <Steps progressDot current={stepIndex} className="justify-center">
                     <Step title={<FormattedMessage id="pages.timer.tracker" />} />
                     <Step title={<FormattedMessage id="pages.timer.information" />} />

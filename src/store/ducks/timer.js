@@ -22,7 +22,6 @@ const INITIAL_STATE = {
         active: false,
         initialDuration: 0,
         unit: "minutes",
-        display: null,
         pause: false,
     }
 }

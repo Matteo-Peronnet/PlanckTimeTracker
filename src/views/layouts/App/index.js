@@ -27,9 +27,8 @@ let firstAsyncConnect = false;
             });
             return Promise.all(promises).then(() => {
                 // Check if we have a timer that has been started previously and we are connected
-                const timerStored = storage.get('timer');
-                if (pathname !== '/login' && timerStored) {
-                    dispatch(restoreTimerRequest(timerStored))
+                if (pathname !== '/login' && storage.has('timer')) {
+                    dispatch(restoreTimerRequest(storage.get('timer')))
                 }
             });
         },

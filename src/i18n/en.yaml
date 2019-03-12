@@ -1,3 +1,6 @@
+shared:
+  yes: "Oui"
+  no: "No"
 pages:
   login:
     title: "Connection"
@@ -32,6 +35,7 @@ pages:
     information: "Information"
     pause: "PAUSE"
     start: "START"
+    delete: "Are you sure you want to cancel the time tracker ?"
     steps:
       previous: "Previous"
       next: "Next"

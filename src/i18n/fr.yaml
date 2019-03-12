@@ -1,3 +1,6 @@
+shared:
+  yes: "Oui"
+  no: "No"
 pages:
   login:
     title: "Connexion"
@@ -32,6 +35,7 @@ pages:
     information: "Information"
     pause: "PAUSE"
     start: "DÉMARRER"
+    delete: "Êtes-vous sur de vouloir annuler la prise de temps ?"
     steps:
       previous: "Précédent"
       next: "Suivant"
