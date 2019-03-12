@@ -9,20 +9,17 @@ class Timer {
             unit,
             onDisplayChange,
         } = this.validateConfigObject(config);
-
-        this.initialDuration = this.getInitialDuration(initialDuration, unit);
+        this.unit = unit;
+        this.initialDuration = this.getInitialDuration(initialDuration);
         this.duration = this.initialDuration;
         this.delay = delay;
         this.display = this.getTimeDisplay();
         this.interval = null;
-        this.startTime = null;
         this.onDisplayChange = onDisplayChange;
-        this.onDisplayChange(this.display)
     }
 
     start(cb) {
         if (!this.interval) {
-            this.startTime = moment();
             this.interval = setInterval(() => {
                 this.duration += this.delay;
                 this.updateDisplay();
@@ -39,13 +36,6 @@ class Timer {
         }
     }
 
-    reset() {
-        console.log(moment() - this.startTime);
-        this.stop();
-        this.duration = this.initialDuration;
-        this.updateDisplay(true);
-    }
-
     updateDisplay(reset = false) {
         const newDisplay = this.getTimeDisplay();
         if (this.display !== newDisplay) {
@@ -54,8 +44,12 @@ class Timer {
         }
     }
 
-    getInitialDuration(duration, unit) {
-        return moment.duration(duration, unit).asMilliseconds();
+    updateDisplayWithoutUpdateTimer () {
+        this.onDisplayChange(this.display, false)
+    }
+
+    getInitialDuration(duration) {
+        return moment.duration(duration, this.unit).asMilliseconds();
     }
 
     getTimeDisplay() {
