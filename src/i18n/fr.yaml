@@ -27,7 +27,19 @@ pages:
       empty: "Il n'y a pas de description"
     timer:
       start: "Démarrer timer"
-
+  timer:
+    tracker: "Traqueur"
+    information: "Information"
+    pause: "PAUSE"
+    start: "DÉMARRER"
+    steps:
+      previous: "Précédent"
+      next: "Suivant"
+      send: "Envoyer"
+    form:
+      type: "Type"
+      description: "Description"
+      startDate: "Date de début"
 components:
   userStory:
     empty: "Il n'y a pas d'User Story"
@@ -45,3 +57,6 @@ form:
     userTokenRequired: "Veuillez saisir votre token"
     connectionError: "Échec de la connexion"
     invalidToken: "Le token saisie est invalide"
+    selectType: "Séléctionner un type"
+    fillDescription: "Entrer une description"
+    selectDate: "Séléctionner une date"

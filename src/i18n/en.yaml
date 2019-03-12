@@ -27,7 +27,19 @@ pages:
       empty: "There is no description"
     timer:
       start: "Start timer"
-
+  timer:
+    tracker: "Tracker"
+    information: "Information"
+    pause: "PAUSE"
+    start: "START"
+    steps:
+      previous: "Previous"
+      next: "Next"
+      send: "Send"
+    form:
+      type: "Type"
+      description: "Description"
+      startDate: "Start date"
 components:
   userStory:
     empty: "There is no User Story"
@@ -45,3 +57,6 @@ form:
     userTokenRequired: "Please enter your token"
     connectionError: "Connection failure"
     invalidToken: "The token entered is invalid"
+    selectType: "Select a type"
+    fillDescription: "Enter a description"
+    selectDate: "Select a date"

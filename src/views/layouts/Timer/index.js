@@ -1,19 +1,18 @@
-import React, { Component, Fragment } from "react";
+import React  from "react";
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
-import { injectIntl, FormattedMessage } from 'react-intl'
 import {getTimeSpentTypesRequest} from "../../../store/ducks/planck";
 import { ipcRenderer } from "electron";
-import {Statistic, Steps, Icon, Form} from 'antd';
+import {FormattedMessage, injectIntl} from 'react-intl'
+import { Steps, Form} from 'antd';
 import { storage } from "../../../i18n";
 import TimeTracker from "./Timer";
 import {Ov} from "../../../utils";
 import TimerStep from './TimerStep';
 import Tracker from './Steps/Tracker';
-import TimeInformation from './Steps/TimeInformation';
-
+import TimerInformation from './Steps/TimerInformation';
 const Step = Steps.Step;
 
 @asyncConnect([
@@ -211,8 +210,8 @@ class Timer extends React.Component {
         return (
             <div className="mt3 flex flex-auto flex-column">
                 <Steps progressDot current={stepIndex} className="justify-center">
-                    <Step title="Tracking" />
-                    <Step title="Information" />
+                    <Step title={<FormattedMessage id="pages.timer.tracker" />} />
+                    <Step title={<FormattedMessage id="pages.timer.information" />} />
                 </Steps>
                 <TimerStep index={stepIndex} update={this.onStepChange} onSubmit={this.onSubmit}>
                     <div style={styleStepsContent}>
@@ -225,7 +224,7 @@ class Timer extends React.Component {
                         />
                     </div>
                     <div style={styleStepsContent}>
-                        <TimeInformation
+                        <TimerInformation
                             timeSpentTypes={timeSpentTypes}
                             form={form}
                         />

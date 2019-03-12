@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Button, message } from 'antd';
+import {injectIntl, FormattedMessage} from "react-intl";
 
-export default class TimerStep extends React.Component {
+@injectIntl
+class TimerStep extends React.Component {
     static propTypes = {
         children: PropTypes.arrayOf(PropTypes.element).isRequired,
         update: PropTypes.func.isRequired,
@@ -44,20 +46,26 @@ export default class TimerStep extends React.Component {
                         index > 0
                         && (
                             <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-                                Previous
+                                <FormattedMessage id="pages.timer.steps.previous"/>
                             </Button>
                         )
                     }
                     {
                         index < children.length - 1
-                        && <Button type="primary" onClick={() => this.next()}>Next</Button>
+                        && <Button type="primary" onClick={() => this.next()}>
+                            <FormattedMessage id="pages.timer.steps.next"/>
+                        </Button>
                     }
                     {
                         index === children.length - 1
-                        && <Button type="primary" onClick={() => this.onSubmit()}>Done</Button>
+                        && <Button type="primary" onClick={() => this.onSubmit()}>
+                            <FormattedMessage id="pages.timer.steps.send"/>
+                        </Button>
                     }
                 </div>
             </Fragment>
         )
     };
 }
+
+export default TimerStep;

@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import PropTypes from 'prop-types';
 import {Button, TimePicker} from "antd";
 import moment from 'moment';
-
+import {FormattedMessage, injectIntl} from 'react-intl'
 
 export const Tracker = (props) => {
 
@@ -23,12 +23,16 @@ export const Tracker = (props) => {
                 !pause ?
                     <Fragment>
                         <Button type="primary" style={buttonStyle} loading ghost>{display}</Button>
-                        <Button className="mt3" type="danger" ghost onClick={() => props.handleTimerPause()}>PAUSE</Button>
+                        <Button className="mt3" type="danger" ghost onClick={() => props.handleTimerPause()}>
+                            <FormattedMessage id="pages.timer.pause"/>
+                        </Button>
                     </Fragment>
                     :
                     <Fragment>
-                        <TimePicker onChange={props.onTimeChange} value={moment(display, format)} format={format} />
-                        <Button className="mt3" onClick={() => props.handleTimerStart()}>DÉMARRER</Button>
+                        <TimePicker allowClear={false} onChange={props.onTimeChange} value={moment(display, format)} format={format} />
+                        <Button className="mt3" onClick={() => props.handleTimerStart()}>
+                            <FormattedMessage id="pages.timer.start"/>
+                        </Button>
                     </Fragment>
             }
         </div>
@@ -44,4 +48,4 @@ Tracker.propTypes = {
     onTimeChange: PropTypes.func.isRequired,
 };
 
-export default Tracker;
+export default injectIntl(Tracker);
