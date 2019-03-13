@@ -60,7 +60,9 @@ class Timer extends React.Component {
         // --------- ELECTRON EVENT ---------
         ipcRenderer.on('closeAppRequest', (event) => {
             // Save the timer before close the application
-            this.saveTimerInStorage();
+            if (this.state.saveTimer) {
+                this.saveTimerInStorage();
+            }
             ipcRenderer.send('closeApp')
         });
         // --------- ELECTRON EVENT ---------
@@ -159,6 +161,7 @@ class Timer extends React.Component {
     };
 
     saveTimerInStorage = () => {
+        console.log('GO SAVE')
         storage.set('timer', {
             ...this.state,
             target: {
