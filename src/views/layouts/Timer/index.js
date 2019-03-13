@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
-import { getTimeSpentTypesRequest } from "../../../store/ducks/planck";
+import { getTimeSpentTypesRequest, postTimeSpentRequest } from "../../../store/ducks/planck";
 import { resetTimer } from "../../../store/ducks/timer";
 import { ipcRenderer } from "electron";
 import {FormattedMessage, injectIntl} from 'react-intl'
@@ -16,6 +16,8 @@ import Tracker from './Steps/Tracker';
 import TimerInformation from './Steps/TimerInformation';
 import withUser from "../../../routes/withUser";
 import {push} from "connected-react-router";
+import moment from 'moment';
+
 const Step = Steps.Step;
 
 @asyncConnect([
@@ -24,11 +26,6 @@ const Step = Steps.Step;
             const {planck: {entities: {timeSpentTypes}}} = getState();
 
             const promises = [];
-
-            const {
-                planck: {entities: { projects }},
-                timer: {target: {projectId}}
-            } = getState();
 
             if (Ov(timeSpentTypes).length === 0) {
                 promises.push(dispatch(getTimeSpentTypesRequest()));
@@ -118,7 +115,8 @@ class Timer extends React.Component {
                 timer: {
                     ...this.state.timer,
                     active: true,
-                    pause: false
+                    pause: false,
+                    saveTimer: true
                 }
             });
         });
@@ -136,7 +134,8 @@ class Timer extends React.Component {
                     ...this.state.timer,
                     initialDuration: this.state.timer.initialDuration + this.state.target.totalTime,
                     pause: true
-                }
+                },
+                saveTimer: true
             });
         })
     }
@@ -150,7 +149,8 @@ class Timer extends React.Component {
                     ...target,
                     totalTime: active && updateTimer ? target.totalTime + 1 : target.totalTime
                 },
-                display: newDisplay
+                display: newDisplay,
+                saveTimer: true
             };
         });
 
@@ -178,7 +178,8 @@ class Timer extends React.Component {
             this.handleTimerPause();
         }
         this.setState({
-            stepIndex: index
+            stepIndex: index,
+            saveTimer: true
         })
     }
 
@@ -189,7 +190,8 @@ class Timer extends React.Component {
             timer: {
                 ...this.state.timer,
                 initialDuration: totalTime
-            }
+            },
+            saveTimer: true
         }, () => {
             this.refreshTimer();
         })
@@ -198,25 +200,46 @@ class Timer extends React.Component {
     onSubmit = () => {
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                this.disableTimerSaving(() => {
+                    const {display, target: {projectId, taskId, taskType, customerId}} = this.state;
+                    this.props.dispatch(postTimeSpentRequest({
+                        target: {
+                            projectId,
+                            taskId,
+                            taskType,
+                            customerId
+                        },
+                        data: {
+                            description: values.description || '',
+                            timeSpentType: values.select,
+                            startDate: moment(values.startDate).format('DD/MM/YYYY hh:mm'),
+                            timeSpentTime: display
+                        }
+                    }))
+                })
             }
         });
     }
 
-    leaveTimer = () => {
+    disableTimerSaving(cb) {
         this.setState({
             ...this.state,
             saveTimer: false
-        }, () => {
+        }, cb)
+    }
+
+    leaveTimer = () => {
+        this.disableTimerSaving(() => {
+            const { customerId, projectId } = this.state.target;
             storage.delete('timer');
             this.props.dispatch(resetTimer())
-            this.props.dispatch(push('/'))
+            this.props.dispatch(push(`/customer/${customerId}/project/${projectId}`))
         })
     }
 
     render() {
         const { display, timer, stepIndex } = this.state;
-        const { timeSpentTypes, form, task } = this.props;
+        const { timeSpentTypes, form } = this.props;
         const styleStepsContent = {
             marginTop: "16px",
             border: "1px dashed #e9e9e9",
@@ -244,7 +267,7 @@ class Timer extends React.Component {
                 <TimerStep index={stepIndex} update={this.onStepChange} onSubmit={this.onSubmit}>
                     <div style={styleStepsContent}>
                         <Tracker
-                            display={display}
+                            display={display || ''}
                             pause={timer.pause}
                             handleTimerPause={this.handleTimerPause}
                             handleTimerStart={this.handleTimerStart}

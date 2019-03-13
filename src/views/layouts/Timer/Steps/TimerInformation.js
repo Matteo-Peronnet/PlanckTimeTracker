@@ -4,6 +4,8 @@ import {
     Form, Input, Select, DatePicker
 } from 'antd';
 import {FormattedMessage, injectIntl} from 'react-intl'
+import moment from 'moment';
+
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -68,6 +70,7 @@ class TimerInformation extends React.Component {
                 >
                     {getFieldDecorator('startDate', {
                         rules: [{ type: 'object', required: true, message: <FormattedMessage id="form.errors.selectDate" /> }],
+                        initialValue: moment()
                     })(
                         <DatePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
                     )}

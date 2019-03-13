@@ -1,6 +1,6 @@
 shared:
   yes: "Oui"
-  no: "No"
+  no: "Non"
 pages:
   login:
     title: "Connexion"

@@ -17,7 +17,7 @@ export default function reduxCasesMiddleware() {
             }
             const [REQUEST, SUCCESS, FAILURE] = types;
             next({ ...rest, type: REQUEST });
-            return promise(getState)
+            return promise(getState, dispatch)
                 .then(
                     result => next({ ...rest, result, type: SUCCESS }),
                     error => next({ ...rest, error, type: FAILURE })

@@ -13,7 +13,7 @@ import { openUrl } from "../../../utils";
 import { withRouter } from "react-router-dom";
 import isPrivate from "../../../routes/isPrivate";
 import { injectIntl, FormattedMessage } from 'react-intl'
-import {loginRequest} from "../../../store/ducks/user";
+import {push} from "connected-react-router";
 
 const formatter = buildFormatter(frenchStrings)
 
@@ -57,7 +57,8 @@ const formatter = buildFormatter(frenchStrings)
         })
     },
     dispatch => ({
-        startTimer: (payload) => dispatch(startTimerRequest(payload))
+        startTimer: (payload) => dispatch(startTimerRequest(payload)),
+        goBack: (uri) => dispatch(push(uri))
     }),
 )
 @isPrivate
@@ -73,6 +74,11 @@ class Task extends React.Component {
         })
     }
 
+    goBack = () => {
+        const { customerId, projectId } = this.props;
+        this.props.goBack(`/customer/${customerId}/project/${projectId}`)
+    }
+
     render() {
         const { task, customer, project } = this.props;
 
@@ -84,7 +90,7 @@ class Task extends React.Component {
                     <Col span={24}>
                         <div style={{padding: "15px 10px 30px"}}>
                             <div className={"flex flex-auto items-center"} style={{ padding: "16px 32px", border: "1px solid rgb(235, 237, 240)", paddingRight: 0}}>
-                                <span style={{cursor: 'pointer'}} onClick={this.props.history.goBack}>
+                                <span style={{cursor: 'pointer'}} onClick={this.goBack}>
                                     <Icon type="arrow-left-o" />
                                 </span>
                                 <Divider type="vertical" />
