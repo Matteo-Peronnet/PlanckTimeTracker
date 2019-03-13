@@ -13,7 +13,7 @@ export const Time = (props) => {
     const min = Math.round((time / 60 - Math.round(time / 60)) * 60);
 
     return (
-        <span>{hour}h{min > 0 && (min)}</span>
+        <span>{hour}h{min > 0 && (min<10 ? `0${min}` : min)}</span>
     );
 }
 
