@@ -4,7 +4,7 @@ import { getCustomers } from '../services/customer';
 import { postTimeSpent } from '../services/timeSpent';
 import {map, catchError, mergeMap} from 'rxjs/operators';
 import {timeSpentTypeSchema, customersSchema, projectSchema} from "../schemas";
-import {getProject} from "../services/task";
+import {getProject, assignTask} from "../services/task";
 import {getTimeSpentType} from "../services/timeSpentType";
 import {combineEpics, ofType} from "redux-observable";
 import {push} from "connected-react-router";
@@ -27,6 +27,11 @@ const POST_TIME_SPENT_REQUEST = 'timeSpentType/POST_TIME_SPENT_REQUEST';
 const POST_TIME_SPENT_FAILURE = 'timeSpentType/POST_TIME_SPENT_FAILURE';
 const POST_TIME_SPENT_SUCCESS = 'timeSpentType/POST_TIME_SPENT_SUCCESS';
 
+const ASSIGN_TASK_REQUEST = 'timeSpentType/ASSIGN_TASK_REQUEST';
+const ASSIGN_TASK_FAILURE = 'timeSpentType/ASSIGN_TASK_FAILURE';
+const ASSIGN_TASK_SUCCESS = 'timeSpentType/ASSIGN_TASK_SUCCESS';
+const ASSIGN_TASK_END = 'timeSpentType/ASSIGN_TASK_END';
+
 
 // Initial state
 const INITIAL_STATE = {
@@ -39,6 +44,9 @@ const INITIAL_STATE = {
         tasks: {},
         supportTasks: {},
         timeSpentTypes: {}
+    },
+    loading: {
+        assignTask: false,
     }
 }
 
@@ -86,6 +94,7 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                     }
                 },
             }
+        case ASSIGN_TASK_SUCCESS:
         case POST_TIME_SPENT_SUCCESS:
             return {
                 ...state,
@@ -95,6 +104,22 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                         ...state.entities[action.result.taskType],
                         [action.result.taskId]: action.result
                     }
+                }
+            }
+        case ASSIGN_TASK_REQUEST:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    assignTask: true
+                }
+            }
+        case ASSIGN_TASK_END:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    assignTask: false
                 }
             }
         default:
@@ -135,6 +160,22 @@ export function getTimeSpentTypesRequest() {
         promise: (getState) => ajax(getTimeSpentType(getState().user.token)).pipe(
             map((res) =>
                 normalize(res.response, [timeSpentTypeSchema])
+            ),
+            catchError((error) => Promise.reject(error)),
+        ).toPromise()
+    }
+}
+
+export function assignTaskRequest(payload) {
+    return {
+        types: [ASSIGN_TASK_REQUEST, ASSIGN_TASK_SUCCESS, ASSIGN_TASK_FAILURE, ASSIGN_TASK_END],
+        promise: (getState) => ajax(assignTask(getState().user.token, payload)).pipe(
+            map((res) =>
+                ({
+                    ...res.response,
+                    taskId: payload.taskId,
+                    taskType: payload.taskType,
+                })
             ),
             catchError((error) => Promise.reject(error)),
         ).toPromise()

@@ -15,7 +15,7 @@ export default function reduxCasesMiddleware() {
             if (!promise) {
                 return next(action);
             }
-            const [REQUEST, SUCCESS, FAILURE] = types;
+            const [REQUEST, SUCCESS, FAILURE, END] = types;
             next({ ...rest, type: REQUEST });
             return promise(getState, dispatch)
                 .then(
@@ -25,7 +25,10 @@ export default function reduxCasesMiddleware() {
                 .catch(error => {
                     console.error('MIDDLEWARE ERROR:', error);
                     next({ ...rest, error, type: FAILURE });
-                });
+                })
+                .finally(() =>
+                    next({type: END})
+                );
         };
     };
 }

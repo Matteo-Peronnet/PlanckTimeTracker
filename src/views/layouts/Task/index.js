@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import {getProjectRequest, getCustomersRequest} from "../../../store/ducks/planck";
+import {getProjectRequest, getCustomersRequest, assignTaskRequest} from "../../../store/ducks/planck";
 import {startTimerRequest} from "../../../store/ducks/timer";
-import { Button, Card, Empty, Divider, Row, Col, Icon, Progress} from "antd";
+import { Button, Card, Empty, Divider, Row, Col, Icon, Progress, Spin} from "antd";
 import TimeAgo from 'react-timeago';
 import frenchStrings from 'react-timeago/lib/language-strings/fr'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
@@ -53,12 +53,14 @@ const formatter = buildFormatter(frenchStrings)
             customer: state.planck.entities.customers[customerId],
             project: state.planck.entities.projects[projectId],
             task: state.planck.entities[taskType][taskId],
+            assignLoading: state.planck.loading.assignTask,
             customerId, projectId, taskType, taskId
         })
     },
     dispatch => ({
         startTimer: (payload) => dispatch(startTimerRequest(payload)),
-        goBack: (uri) => dispatch(push(uri))
+        goBack: (uri) => dispatch(push(uri)),
+        assignTask: (payload) => dispatch(assignTaskRequest(payload))
     }),
 )
 @isPrivate
@@ -79,8 +81,15 @@ class Task extends React.Component {
         this.props.goBack(`/customer/${customerId}/project/${projectId}`)
     }
 
+    assignTask = () => {
+        this.props.assignTask({
+            taskId: this.props.taskId,
+            taskType: this.props.taskType
+        })
+    }
+
     render() {
-        const { task, customer, project } = this.props;
+        const { task, customer, project, assignLoading } = this.props;
 
         const allTimeSpent = task.spentTimes.reduce((acc, curr) => acc + curr.time, 0);
 
@@ -114,13 +123,15 @@ class Task extends React.Component {
                             </div>
                         </div>
                         <div className="flex flex-auto items-center justify-between mt2" style={{padding: "0px 10px 0px 15px"}}>
-                            <div>
-                                <span className="fw6"><FormattedMessage id="pages.task.assignTo" /> : </span> {
+                            <div className="flex">
+                                <span className="fw6 mr2"><FormattedMessage id="pages.task.assignTo" /> : </span> {
                                 task.assignedTo ? <span>{task.assignedTo.firstname} {task.assignedTo.lastname}</span>
                                     :
-                                <Button size="small" style={{ verticalAlign: 'middle' }}>
-                                    <FormattedMessage id="pages.task.assign" />
-                                </Button>
+                                <Spin spinning={assignLoading}>
+                                    <Button size="small" onClick={this.assignTask} style={{ verticalAlign: 'middle' }}>
+                                        <FormattedMessage id="pages.task.assign" />
+                                    </Button>
+                                </Spin>
                                 }
                             </div>
                             <div>
