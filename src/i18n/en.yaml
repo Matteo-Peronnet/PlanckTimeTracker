@@ -36,6 +36,10 @@ pages:
     pause: "PAUSE"
     start: "START"
     delete: "Are you sure you want to cancel the time tracker ?"
+    modal:
+      iddle:
+        title: "Do you want to remove the inactive time ?"
+        content: "By pressing yes, you will remove"
     steps:
       previous: "Previous"
       next: "Next"

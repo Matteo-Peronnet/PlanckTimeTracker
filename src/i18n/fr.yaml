@@ -36,6 +36,10 @@ pages:
     pause: "PAUSE"
     start: "DÉMARRER"
     delete: "Êtes-vous sur de vouloir annuler la prise de temps ?"
+    modal:
+      iddle:
+        title: "Voulez vous retirer le temps innactif ?"
+        content: "En appuyant sur oui, vous allez retirer"
     steps:
       previous: "Précédent"
       next: "Suivant"

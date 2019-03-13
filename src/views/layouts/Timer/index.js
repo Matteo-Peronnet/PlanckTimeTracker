@@ -6,8 +6,9 @@ import isPrivate from "../../../routes/isPrivate";
 import { getTimeSpentTypesRequest, postTimeSpentRequest } from "../../../store/ducks/planck";
 import { resetTimer } from "../../../store/ducks/timer";
 import { ipcRenderer } from "electron";
+import { intl } from '../../../i18n'
 import {FormattedMessage, injectIntl} from 'react-intl'
-import { Steps, Form, Button, Popconfirm} from 'antd';
+import { Steps, Form, Button, Popconfirm, Modal} from 'antd';
 import { storage } from "../../../i18n";
 import TimeTracker from "./Timer";
 import {Ov} from "../../../utils";
@@ -19,6 +20,7 @@ import {push} from "connected-react-router";
 import moment from 'moment';
 
 const Step = Steps.Step;
+const confirm = Modal.confirm;
 
 @asyncConnect([
     {
@@ -57,6 +59,8 @@ class Timer extends React.Component {
             saveTimer: true
         }
 
+        this.askRemoveIddleTime = this.askRemoveIddleTime.bind(this);
+
         // --------- ELECTRON EVENT ---------
         ipcRenderer.on('closeAppRequest', (event) => {
             // Save the timer before close the application
@@ -64,6 +68,16 @@ class Timer extends React.Component {
                 this.saveTimerInStorage();
             }
             ipcRenderer.send('closeApp')
+        });
+
+        ipcRenderer.on('unlockScreen', (event, iddleTime) => {
+            const { pathname } = this.props;
+            const { timer: {pause} } = this.state;
+            // If we are in timer view and timer was not paused
+            if (pathname === '/timer' && !pause) {
+                this.handleTimerPause();
+                this.askRemoveIddleTime(iddleTime);
+            }
         });
         // --------- ELECTRON EVENT ---------
     }
@@ -92,6 +106,22 @@ class Timer extends React.Component {
     };
 
     // --------- ELECTRON EVENT ---------
+
+    askRemoveIddleTime (iddleTime) {
+        // https://stackoverflow.com/questions/52649980/react-ant-modal-props-of-undefined
+        let self = this;
+        confirm({
+            title: intl.formatMessage({ id: 'pages.timer.modal.iddle.title' }),
+            content: `${intl.formatMessage({ id: 'pages.timer.modal.iddle.content' })} ${iddleTime}min`,
+            onOk() {
+                let newTime = (self.state.timer.initialDuration + self.state.target.totalTime) - iddleTime;
+                self.updateTimeManually(newTime)
+            },
+            onCancel() {},
+            okText: intl.formatMessage({ id: 'shared.yes' }),
+            cancelText: intl.formatMessage({ id: 'shared.no' }),
+        });
+    }
 
     refreshTimer () {
         this.initializeTimer();
@@ -188,6 +218,10 @@ class Timer extends React.Component {
 
     onTimeChange = (time) => {
         const totalTime = time.hours()*60+time.minutes();
+        this.updateTimeManually(totalTime);
+    }
+
+    updateTimeManually = (totalTime) => {
         this.setState({
             ...this.state,
             timer: {

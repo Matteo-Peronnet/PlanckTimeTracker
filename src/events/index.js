@@ -10,7 +10,6 @@ function init(store) {
             ipcRenderer.send('closeApp')
         }
     });
-
 }
 
 

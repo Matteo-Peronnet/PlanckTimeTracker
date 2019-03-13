@@ -2,6 +2,7 @@ require('dotenv').config()
 const path = require('path');
 const electron = require('electron');
 const keytar = require('keytar');
+const moment = require('moment');
 const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
 const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
@@ -10,6 +11,7 @@ const { app, ipcMain } = electron;
 let mainWindow;
 let tray;
 let canClose = false;
+let lockScreenAt;
 
 process.setMaxListeners(Infinity);
 
@@ -34,6 +36,21 @@ app.on('ready', () => {
             mainWindow.webContents.send('closeAppRequest');
         }
     });
+
+    electron.powerMonitor.on('lock-screen', () => {
+        lockScreenAt = new Date();
+    })
+
+    electron.powerMonitor.on('unlock-screen', () => {
+        let unlockScreenAt = new Date();
+        let iddleTime = moment(unlockScreenAt).diff(lockScreenAt, 'minutes');
+        // Show window if it is not visible
+        if(!mainWindow.isVisible()){
+            tray.onClick(null, tray.getBounds())
+        }
+        mainWindow.webContents.send('unlockScreen', iddleTime);
+    })
+
 });
 
 
