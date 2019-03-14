@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar as AntAvatar } from 'antd';
 import PropTypes from 'prop-types';
+import env from '../../env.json';
 
 export const Avatar = (props) => {
 
@@ -11,7 +12,7 @@ export const Avatar = (props) => {
             shape="square"
             size={size}
             icon="user"
-            src={`${process.env.PLANCK_HOST}/user/${userId}/avatar`}
+            src={`${env.PLANCK_HOST}/user/${userId}/avatar`}
         />
     )
 

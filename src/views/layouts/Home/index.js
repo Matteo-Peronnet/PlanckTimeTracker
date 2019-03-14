@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import env from '../../../../env.json'
 import { asyncConnect } from 'redux-connect';
 import { getCustomersRequest } from '../../../store/ducks/planck'
 import { Menu, Dropdown, Avatar, Icon } from 'antd';
@@ -65,7 +66,7 @@ class Home extends React.Component {
                       const avatar = <Avatar
                           style={{margin: "5px", cursor: 'pointer', border: '1px solid #ebedf0'}}
                           key={customer.id}
-                          src={`${process.env.PLANCK_HOST}/uploads/customers/logo/${customer.logo}`}
+                          src={`${env.PLANCK_HOST}/uploads/customers/logo/${customer.logo}`}
                           shape="square" size={70}
                       />
 

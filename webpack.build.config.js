@@ -13,7 +13,7 @@ fs.readdirSync('node_modules')
     });
 
 new webpack.EnvironmentPlugin({
-    NODE_ENV: 'dev',
+    NODE_ENV: 'production',
     ...dotenv.config().parsed // <-- this line
 }),
 
@@ -22,11 +22,11 @@ module.exports = {
     entry: [
         './src/index.js'
     ],
-    target: 'node',
+    target: 'electron-renderer',
     output: {
-        path: __dirname,
-        publicPath: '/',
-        filename: 'bundle.js'
+        path: path.join(__dirname, 'dist'),
+        publicPath: './dist/',
+        filename: 'renderer.prod.js'
     },
     module: {
         rules: [

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import env from "../../../../env.json";
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import {getProjectRequest, getCustomersRequest, assignTaskRequest} from "../../../store/ducks/planck";
@@ -144,7 +145,7 @@ class Task extends React.Component {
                                 type="primary"
                                 icon="global"
                                 size={"small"}
-                                onClick={() => openUrl(`${process.env.PLANCK_HOST}/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
+                                onClick={() => openUrl(`${env.PLANCK_HOST}/${customer.slug}/${project.slug}/task/${task.uid.uid}/show`)}
                             />
                         </div>
                     </Col>

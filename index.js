@@ -1,11 +1,9 @@
-require('dotenv').config()
 const path = require('path');
 const electron = require('electron');
 const keytar = require('keytar');
 const moment = require('moment');
 const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
-const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
 const { app, ipcMain } = electron;
 
 let mainWindow;
@@ -18,12 +16,14 @@ process.setMaxListeners(Infinity);
 app.on('ready', () => {
     app.dock.hide();
 
-    [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach(extension => {
-        installExtension(extension)
-            .then((name) => console.log(`Added Extension: ${name}`))
-            .catch((err) => console.log('An error occurred: ', err));
-    });
-
+    if(process.env.NODE_ENV !== "production") {
+        const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
+        [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach(extension => {
+            installExtension(extension)
+                .then((name) => console.log(`Added Extension: ${name}`))
+                .catch((err) => console.log('An error occurred: ', err));
+        });
+    }
     mainWindow = new MainWindow(`file://${__dirname}/src/index.html`);
 
     const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'default-icon.png';
