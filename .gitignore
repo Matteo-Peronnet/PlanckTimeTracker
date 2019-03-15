@@ -1,3 +1,6 @@
 node_modules/
 builds/
+!build/icon.ico
+!build/icon.png
 dist/
+src/renderer.prod.js

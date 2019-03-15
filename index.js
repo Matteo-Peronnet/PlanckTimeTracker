@@ -14,7 +14,10 @@ let lockScreenAt;
 process.setMaxListeners(Infinity);
 
 app.on('ready', () => {
-    app.dock.hide();
+
+    if (process.platform === 'darwin') {
+        app.dock.hide();
+    }
 
     if(process.env.NODE_ENV !== "production") {
         const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');

@@ -24,8 +24,8 @@ module.exports = {
     ],
     target: 'electron-renderer',
     output: {
-        path: path.join(__dirname, 'dist'),
-        publicPath: './dist/',
+        path: path.join(__dirname, 'src'),
+        publicPath: './src/',
         filename: 'renderer.prod.js'
     },
     module: {
