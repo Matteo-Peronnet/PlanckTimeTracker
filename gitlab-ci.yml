@@ -1,0 +1,17 @@
+variables:
+  VERSION_ID: '1.0.$CI_PIPELINE_ID'
+
+stages:
+- build
+
+build:
+  image: slauta93/electron-builder-win
+  stage: build
+  artifacts:
+    paths:
+    - dist/*-mac.zip
+    - dist/*-amd64.deb
+  script:
+  - sed "s/1.0.0/${VERSION_ID}/g" package.json > _package.json && mv _package.json package.json
+  - npm install
+  - npm run dist
