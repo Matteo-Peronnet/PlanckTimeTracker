@@ -4,6 +4,8 @@ const keytar = require('keytar');
 const moment = require('moment');
 const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
+require('./app/updater');
+
 const { app, ipcMain } = electron;
 
 let mainWindow;
