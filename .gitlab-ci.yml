@@ -17,6 +17,7 @@ build:
         's/http:\/\/.*\.ubuntu\.com/http:\/\/old-releases\.ubuntu\.com/'
         /etc/apt/sources.list.backup | sudo tee /etc/apt/sources.list
   - apt update && apt upgrade -y
+  - node -v
   - apt-get install -y libsecret-1-dev
   - npm install
   - npm run dist
