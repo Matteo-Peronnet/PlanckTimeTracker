@@ -13,7 +13,7 @@ build:
     - dist/*-amd64.deb
 
   script:
-  - sed "s/1.0.0/${VERSION_ID}/g" package.json > _package.json && mv _package.json package.json
+  - npm version patch
   - cat package.json
   - npm install
   - npm run dist
