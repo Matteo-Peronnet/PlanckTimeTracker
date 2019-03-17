@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
-const dotenv = require('dotenv');
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -13,8 +12,7 @@ fs.readdirSync('node_modules')
     });
 
 new webpack.EnvironmentPlugin({
-    NODE_ENV: 'production',
-    ...dotenv.config().parsed // <-- this line
+    NODE_ENV: 'production'
 }),
 
 module.exports = {
