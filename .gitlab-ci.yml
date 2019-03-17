@@ -13,6 +13,7 @@ build:
     - dist/*-amd64.deb
 
   script:
+  - apt-get update
   - apt-get install -y libsecret-1-dev
   - npm install
   - npm run dist
