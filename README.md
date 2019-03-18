@@ -1,6 +1,5 @@
 # PLANCK TIME TRACKER
 
-
 ## Installation
 
 ```bash
