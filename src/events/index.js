@@ -1,6 +1,11 @@
 import {ipcRenderer} from "electron";
 import { storage } from '../i18n';
 import { isInTimerView } from '../utils'
+import { remote } from 'electron';
+import { message, Button } from 'antd';
+const updater = remote.require('electron-simple-updater');
+
+let downloadLoading;
 
 function init(store) {
 
@@ -11,28 +16,40 @@ function init(store) {
         }
     });
 
-    ipcRenderer.on('checkingForUpdate', (event) => {
+    updater.setOptions('logger', {
+        info(text) { console.log('info', text) },
+        warn(text) { console.log('warn', text) },
+        debug(text) { console.log('debug', text) },
+    });
+
+    updater.on('checking-for-update', () => {
         console.log("checkingForUpdate")
     });
 
-    ipcRenderer.on('updateAvailable', (event, arg) => {
-        console.log("updateAvailable", arg)
+    updater.on('update-available', (meta) => {
+        console.log("updateAvailable", meta)
+        message.success('updateAvailable');
     });
 
-    ipcRenderer.on('updateNotAvailable', (event, arg) => {
-        console.log("updateNotAvailable", arg)
+    updater.on('update-not-available', () => {
+        console.log("updateNotAvailable")
+        message.success('updateNotAvailable');
     });
 
-    ipcRenderer.on('updateError', (event, arg) => {
-        console.log("updateError", arg)
+    updater.on('error', (err) => {
+        console.log("error", err)
+        message.error('Error update');
     });
 
-    ipcRenderer.on('downloadProgress', (event, arg) => {
-        console.log("downloadProgress", arg)
+    updater.on('update-downloading', (meta) => {
+        console.log(meta)
+        message.loading('Action in progress..');
     });
 
-    ipcRenderer.on('updateDownloaded', (event, arg) => {
-        console.log("updateDownloaded", arg)
+    updater.on('update-downloaded', (meta) => {
+        console.log('downloaded !!!!', meta)
+        message.success('Updated !', meta);
+        setTimeout(() => updater.quitAndInstall(), 8000)
     });
 
 
