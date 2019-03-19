@@ -4,7 +4,7 @@ const keytar = require('keytar');
 const moment = require('moment');
 const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
-require('./app/updater');
+const updater = require('./app/updater');
 
 const { app, ipcMain } = electron;
 
@@ -30,6 +30,8 @@ app.on('ready', () => {
         });
     }
     mainWindow = new MainWindow(`file://${__dirname}/src/index.html`);
+    updater(mainWindow);
+    mainWindow.webContents.openDevTools();
 
     const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'default-icon.png';
     const iconPath = path.join(__dirname, `src/assets/${iconName}`);

@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const fs = require('fs');
-const dotenv = require('dotenv');
 
 const port = 4172;
 var nodeModules = {};
@@ -14,8 +13,7 @@ fs.readdirSync('node_modules')
     });
 
 new webpack.EnvironmentPlugin({
-    NODE_ENV: 'development',
-    ...dotenv.config().parsed // <-- this line
+    NODE_ENV: 'development'
 }),
 
 module.exports = {
