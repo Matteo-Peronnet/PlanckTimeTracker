@@ -22,7 +22,7 @@
     "publish:patch": "versiony package.json --patch",
     "publish:minor": "versiony package.json --minor",
     "publish:major": "versiony package.json --major",
-    "publish": "rm -rf dist && npm run build && build -ml"
+    "publish": "rm -rf dist && npm run build && build -ml && publish darwin-x64 && publish linux-x64"
   },
   "updater": {
     "url": "https://raw.githubusercontent.com/Matteo-Peronnet/PlanckTimeTracker/master/updates.json"
