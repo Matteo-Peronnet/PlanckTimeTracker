@@ -3,8 +3,8 @@ import { storage } from '../i18n';
 import { isInTimerView } from '../utils'
 import { remote } from 'electron';
 import { message, Button } from 'antd';
+import log from 'electron-log';
 const updater = remote.require('electron-simple-updater');
-
 let downloadLoading;
 
 function init(store) {
@@ -17,32 +17,32 @@ function init(store) {
     });
 
     updater.on('checking-for-update', () => {
-        console.log("checkingForUpdate")
+        log.info("checkingForUpdate")
     });
 
     updater.on('update-available', (meta) => {
-        console.log("updateAvailable", meta)
+        log.info("updateAvailable", meta)
         message.success('updateAvailable');
     });
 
     updater.on('update-not-available', () => {
-        console.log("updateNotAvailable")
+        log.info("updateNotAvailable")
         message.success('updateNotAvailable');
     });
 
     updater.on('error', (err) => {
-        console.log("error", err)
+        log.info("error", err)
         message.error('Error update');
     });
 
     updater.on('update-downloading', (meta) => {
-        console.log(meta)
+        log.info(meta)
         message.loading('Action in progress..');
     });
 
     updater.on('update-downloaded', (meta) => {
-        console.log('downloaded !!!!', meta)
-        message.success('Updated !', meta);
+        log.info('downloaded !!!!', meta)
+        message.success('Updated !' + meta.version);
         setTimeout(() => updater.quitAndInstall(), 8000)
     });
 

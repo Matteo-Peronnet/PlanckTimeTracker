@@ -22,7 +22,7 @@
     "publish:patch": "versiony package.json --patch && npm run publish",
     "publish:minor": "versiony package.json --minor && npm run publish",
     "publish:major": "versiony package.json --major && npm run publish",
-    "publish": "rm -rf dist && npm run build && build -ml && publish"
+    "publish": "rm -rf dist && npm run build && build -ml"
   },
   "updater": {
     "url": "https://raw.githubusercontent.com/Matteo-Peronnet/PlanckTimeTracker/master/updates.json"
@@ -96,6 +96,7 @@
     "dotize": "^0.3.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-localshortcut": "^1.1.1",
+    "electron-log": "^3.0.1",
     "electron-simple-updater": "^1.4.4",
     "electron-store": "^2.0.0",
     "electron-updater": "^4.0.6",
