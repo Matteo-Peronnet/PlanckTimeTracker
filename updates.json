@@ -1,7 +1,0 @@
-{
-  "darwin-x64-prod": {
-    "update": "https://github.com/Matteo-Peronnet/PlanckTimeTracker/releases/download/darwin-x64-prod-v1.0.20/release.json",
-    "install": "https://github.com/Matteo-Peronnet/PlanckTimeTracker/releases/download/darwin-x64-prod-v1.0.20/planck-tracker-1.0.20.dmg",
-    "version": "1.0.20"
-  }
-}
