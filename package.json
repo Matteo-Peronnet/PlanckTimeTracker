@@ -1,6 +1,6 @@
 {
   "name": "planck-tracker",
-  "version": "1.0.42",
+  "version": "1.0.0",
   "description": "Planck time tracker",
   "author": "Matteo Peronnet, Inc <matteo@troopers.email>",
   "homepage": "https://gitlab.troopers.agency/Matteo/plancktimetracker",
@@ -19,9 +19,9 @@
     "build": "NODE_ENV=production webpack --config webpack.build.config.js",
     "postinstall": "install-app-deps",
     "pack": "npm run build && NODE_ENV=production build --dir",
-    "publish:patch": "versiony package.json --patch && npm run publish",
-    "publish:minor": "versiony package.json --minor && npm run publish",
-    "publish:major": "versiony package.json --major && npm run publish",
+    "publish:patch": "versiony package.json --patch",
+    "publish:minor": "versiony package.json --minor",
+    "publish:major": "versiony package.json --major",
     "publish": "rm -rf dist && npm run build && build -ml"
   },
   "updater": {
