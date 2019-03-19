@@ -16,12 +16,6 @@ function init(store) {
         }
     });
 
-    updater.setOptions('logger', {
-        info(text) { console.log('info', text) },
-        warn(text) { console.log('warn', text) },
-        debug(text) { console.log('debug', text) },
-    });
-
     updater.on('checking-for-update', () => {
         console.log("checkingForUpdate")
     });
