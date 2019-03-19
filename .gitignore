@@ -1,6 +1,11 @@
 node_modules/
-builds/
+build/
 !build/icon.ico
 !build/icon.png
 dist/
 src/renderer.prod.js
+.env
+publisher.json
+build/all-certs.p12
+build/entitlements.mac.plist
+embedded.provisionprofile
