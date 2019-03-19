@@ -10,6 +10,32 @@ function init(store) {
             ipcRenderer.send('closeApp')
         }
     });
+
+    ipcRenderer.on('checkingForUpdate', (event) => {
+        console.log("checkingForUpdate")
+    });
+
+    ipcRenderer.on('updateAvailable', (event, arg) => {
+        console.log("updateAvailable", arg)
+    });
+
+    ipcRenderer.on('updateNotAvailable', (event, arg) => {
+        console.log("updateNotAvailable", arg)
+    });
+
+    ipcRenderer.on('updateError', (event, arg) => {
+        console.log("updateError", arg)
+    });
+
+    ipcRenderer.on('downloadProgress', (event, arg) => {
+        console.log("downloadProgress", arg)
+    });
+
+    ipcRenderer.on('updateDownloaded', (event, arg) => {
+        console.log("updateDownloaded", arg)
+    });
+
+
 }
 
 
