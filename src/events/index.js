@@ -8,12 +8,13 @@ import log from 'electron-log';
 
 const updater = remote.require('electron-simple-updater');
 const confirm = Modal.confirm;
+let newVersionFound = false;
 
 function init(store) {
 
     ipcRenderer.on('closeAppRequest', (event) => {
         // Close the Application if we don't need to save the timer
-        if (!isInTimerView(store.getState()) && !storage.has('timer')) {
+        if (!isInTimerView(store.getState()) || newVersionFound) {
             ipcRenderer.send('closeApp')
         }
     });
@@ -43,6 +44,7 @@ function init(store) {
     });
 
     updater.on('update-downloaded', (meta) => {
+        newVersionFound = true;
         log.info('downloaded !!!!', meta)
         confirm({
             title: intl.formatMessage({ id: 'updater.title' }),
@@ -56,7 +58,11 @@ function init(store) {
         });
     });
 
-
+    setInterval(() => {
+        if (!newVersionFound) {
+            updater.checkForUpdates();
+        }
+    }, 1000 * 60 * 10) // Every 10 mins
 }
 
 
