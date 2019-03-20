@@ -48,7 +48,7 @@ function init(store) {
         log.info('downloaded !!!!', meta)
         confirm({
             title: intl.formatMessage({ id: 'updater.title' }),
-            content: `${intl.formatMessage({ id: 'updater.message' })} (${meta.version}) ?`,
+            content: `${intl.formatMessage({ id: 'updater.message' })} (v${meta.version}) ?`,
             onOk() {
                 updater.quitAndInstall()
             },
@@ -58,11 +58,7 @@ function init(store) {
         });
     });
 
-    setInterval(() => {
-        if (!newVersionFound) {
-            updater.checkForUpdates();
-        }
-    }, 1000 * 60 * 10) // Every 10 mins
+   //setInterval(()=> updater.checkForUpdates(), 1000 * 60 * 10) // Check for updates every 10 minutes
 }
 
 
