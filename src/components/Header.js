@@ -9,6 +9,7 @@ import Avatar from "./Avatar";
 import * as userActions from '../store/ducks/user';
 import * as intlActions from '../store/ducks/intl';
 import { injectIntl, FormattedMessage } from 'react-intl'
+import {currentVersion} from "../events";
 
 const SubMenu = Menu.SubMenu;
 
@@ -29,11 +30,13 @@ export default class Header extends Component {
 
     renderMenu = () => (
         <Menu key="menu">
+            <Menu.Item key="currentVersion" disabled={true}>v{currentVersion}</Menu.Item>
+            <Menu.Divider key="divider-1" />
             <SubMenu key="language" title={[<Icon key="icon" type="flag" />, <FormattedMessage key="language.title" id="components.header.menu.language.title" />]}>
                 <Menu.Item key="fr" onClick={() => this.props.updateIntlRequest('fr')} disabled={this.props.intl.locale === 'fr'}><FormattedMessage id="components.header.menu.language.select.fr" /></Menu.Item>
                 <Menu.Item key="en" onClick={() => this.props.updateIntlRequest('en')} disabled={this.props.intl.locale === 'en'}><FormattedMessage id="components.header.menu.language.select.en" /></Menu.Item>
             </SubMenu>
-            <Menu.Divider key="divider" />
+            <Menu.Divider key="divider-2" />
             <Menu.Item key="disconnect" onClick={() => this.props.logoutRequest()}><Icon key="disconnect" type="disconnect" /> <FormattedMessage key="disconnect.title" id="components.header.menu.disconnect.title" /></Menu.Item>
         </Menu>
     );

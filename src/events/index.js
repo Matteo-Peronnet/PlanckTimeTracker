@@ -10,6 +10,8 @@ const updater = remote.require('electron-simple-updater');
 const confirm = Modal.confirm;
 let newVersionFound = false;
 
+export const currentVersion = updater.version || '';
+
 function init(store) {
 
     ipcRenderer.on('closeAppRequest', (event) => {
@@ -58,7 +60,12 @@ function init(store) {
         });
     });
 
-   //setInterval(()=> updater.checkForUpdates(), 1000 * 60 * 10) // Check for updates every 10 minutes
+   setInterval(()=> {
+       if(!newVersionFound) {
+           updater.checkForUpdates()
+       }
+   }, 1000 * 60 * 10) // Check for updates every 10 minutes
+
 }
 
 
