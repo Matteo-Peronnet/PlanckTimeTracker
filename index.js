@@ -42,6 +42,11 @@ app.on('ready', () => {
         }
     });
 
+    // Emitted when the window is closed.
+    mainWindow.on('closed', () => {
+        mainWindow = null
+    })
+
     electron.powerMonitor.on('lock-screen', () => {
         lockScreenAt = new Date();
     })
@@ -58,6 +63,18 @@ app.on('ready', () => {
 
 });
 
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
+})
+
+
+ipcMain.on('closeApp', (event) => {
+    canClose = true;
+    app.quit();
+})
 
 ipcMain.on('getToken', (event, arg) => {
     keytar.getPassword('PlanckTimeTracker', 'Planck').then((res) => {
@@ -78,7 +95,3 @@ ipcMain.on('update-timer', (event, timeLeft) => {
     tray.setTitle(timeLeft);
 });
 
-ipcMain.on('closeApp', (event) => {
-    canClose = true;
-    app.quit();
-})
