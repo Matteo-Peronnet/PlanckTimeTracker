@@ -45,6 +45,7 @@ app.on('ready', () => {
     // Emitted when the window is closed.
     mainWindow.on('closed', () => {
         mainWindow = null
+        app.exit(0)
     })
 
     electron.powerMonitor.on('lock-screen', () => {
