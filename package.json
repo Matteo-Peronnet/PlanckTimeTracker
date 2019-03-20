@@ -1,6 +1,6 @@
 {
   "name": "planck-tracker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Planck time tracker",
   "author": "Matteo Peronnet, Inc <matteo@troopers.email>",
   "homepage": "https://gitlab.troopers.agency/Matteo/plancktimetracker",
@@ -22,7 +22,8 @@
     "publish:patch": "versiony package.json --patch",
     "publish:minor": "versiony package.json --minor",
     "publish:major": "versiony package.json --major",
-    "publish": "rm -rf dist && npm run build && build -ml && publish darwin-x64 && publish linux-x64"
+    "publish": "rm -rf dist && npm run build && build -ml && publish all",
+    "publish:list": "publish list"
   },
   "updater": {
     "url": "https://raw.githubusercontent.com/Matteo-Peronnet/PlanckTimeTracker/master/updates.json"
