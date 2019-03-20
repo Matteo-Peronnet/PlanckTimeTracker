@@ -60,6 +60,9 @@ components:
           en: "en"
       disconnect:
         title: "Deconnexion"
+updater:
+  title: "Une nouvelle version a été trouvée"
+  message: "Souhaitez-vous installer la nouvelle version"
 form:
   errors:
     userTokenRequired: "Veuillez saisir votre token"

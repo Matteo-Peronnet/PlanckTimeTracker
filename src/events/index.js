@@ -1,11 +1,13 @@
 import {ipcRenderer} from "electron";
-import { storage } from '../i18n';
+import {intl, storage} from '../i18n';
 import { isInTimerView } from '../utils'
 import { remote } from 'electron';
-import { message, Button } from 'antd';
+import { Modal } from 'antd';
+import { message } from 'antd';
 import log from 'electron-log';
+
 const updater = remote.require('electron-simple-updater');
-let downloadLoading;
+const confirm = Modal.confirm;
 
 function init(store) {
 
@@ -42,8 +44,16 @@ function init(store) {
 
     updater.on('update-downloaded', (meta) => {
         log.info('downloaded !!!!', meta)
-        message.success('Updated !' + meta.version);
-        setTimeout(() => updater.quitAndInstall(), 8000)
+        confirm({
+            title: intl.formatMessage({ id: 'updater.title' }),
+            content: `${intl.formatMessage({ id: 'updater.message' })} (${meta.version}) ?`,
+            onOk() {
+                updater.quitAndInstall()
+            },
+            onCancel() {},
+            okText: intl.formatMessage({ id: 'shared.yes' }),
+            cancelText: intl.formatMessage({ id: 'shared.no' }),
+        });
     });
 
 
