@@ -35,7 +35,7 @@ class Login extends React.Component {
                 <Content style={{ padding: '50px', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Spin spinning={user.loading}>
                         <Layout style={{ padding: '25px', background: '#fff', borderRadius: 5 }}>
-                            <h3 className="tc"><FormattedMessage id="pages.login.title" /> 1.0.1</h3>
+                            <h3 className="tc"><FormattedMessage id="pages.login.title" /> 1.0.3</h3>
                             <div className="mt3">
                                 <Form onSubmit={this.handleSubmit}>
                                     <Form.Item>
