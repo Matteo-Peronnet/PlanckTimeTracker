@@ -63,6 +63,9 @@ components:
 updater:
   title: "Une nouvelle version a été trouvée"
   message: "Souhaitez-vous installer la nouvelle version"
+  updateAvailable: "Mise à jour disponible"
+  updateNotAvailable: "Aucune mise à jour"
+  errorUpdate: "Erreur mise à jour"
 form:
   errors:
     userTokenRequired: "Veuillez saisir votre token"

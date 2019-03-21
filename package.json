@@ -18,12 +18,12 @@
     "start": "NODE_ENV=development webpack-dev-server --config=./webpack.dev.config.js",
     "build": "NODE_ENV=production webpack --config webpack.build.config.js",
     "postinstall": "install-app-deps",
-    "pack": "npm run build && NODE_ENV=production build --dir",
+    "pack": "rm -rf dist && npm run build && build -ml",
     "publish:patch": "versiony package.json --patch",
     "publish:minor": "versiony package.json --minor",
     "publish:major": "versiony package.json --major",
-    "publish": "rm -rf dist && npm run build && build -ml && publish all",
-    "publish:list": "publish list"
+    "publish:list": "publish list",
+    "publish": "npm run pack && publish all"
   },
   "updater": {
     "url": "https://raw.githubusercontent.com/Matteo-Peronnet/PlanckTimeTracker/master/updates.json"
@@ -85,6 +85,8 @@
     "webpack-dev-server": "^2.11.3"
   },
   "dependencies": {
+    "@sentry/browser": "^4.6.4",
+    "@sentry/electron": "^0.17.0",
     "antd": "^3.13.6",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
@@ -96,6 +98,7 @@
     "dotenv": "^6.2.0",
     "dotize": "^0.3.0",
     "electron-devtools-installer": "^2.2.4",
+    "electron-is-dev": "^1.0.1",
     "electron-localshortcut": "^1.1.1",
     "electron-log": "^3.0.1",
     "electron-simple-updater": "^1.4.4",

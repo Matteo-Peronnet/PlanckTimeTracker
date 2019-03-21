@@ -1,26 +1,38 @@
 const path = require('path');
+const env = require('./env.json');
 const electron = require('electron');
 const keytar = require('keytar');
 const moment = require('moment');
 const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
+const isDev = require('electron-is-dev');
+const Sentry = require('@sentry/electron')
 const { app, ipcMain } = electron;
-require('./app/updater');
 
 let mainWindow;
 let tray;
 let canClose = false;
 let lockScreenAt;
 
+if(!isDev) {
+    Sentry.init({dsn: env.SENTRY_DSN})
+}
+
 process.setMaxListeners(Infinity);
 
-app.on('ready', () => {
+process.on('uncaughtException', (error) => {
+    if (!isDev) {
+        Sentry.captureMessage(error.message)
+    }
+});
 
+app.on('ready', () => {
+    require('./app/updater');
     if (process.platform === 'darwin') {
         app.dock.hide();
     }
 
-    if(process.env.NODE_ENV !== "production") {
+    if(isDev) {
         const { default: installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } = require('electron-devtools-installer');
         [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS].forEach(extension => {
             installExtension(extension)

@@ -3,8 +3,10 @@ import {intl, storage} from '../i18n';
 import { isInTimerView } from '../utils'
 import { remote } from 'electron';
 import { Modal } from 'antd';
+import isDev from 'electron-is-dev';
 import { message } from 'antd';
 import log from 'electron-log';
+import * as Sentry from '@sentry/browser';
 
 const updater = remote.require('electron-simple-updater');
 const confirm = Modal.confirm;
@@ -27,17 +29,20 @@ function init(store) {
 
     updater.on('update-available', (meta) => {
         log.info("updateAvailable", meta)
-        message.success('updateAvailable');
+        message.success(intl.formatMessage({ id: 'updater.updateAvailable' }));
     });
 
     updater.on('update-not-available', () => {
         log.info("updateNotAvailable")
-        message.success('updateNotAvailable');
+        message.success(intl.formatMessage({ id: 'updater.updateNotAvailable' }));
     });
 
     updater.on('error', (err) => {
         log.info("error", err)
-        message.error('Error update');
+        if (!isDev) {
+            Sentry.captureException(new Error(err.toString()));
+        }
+        message.error(intl.formatMessage({ id: 'updater.errorUpdate' }));
     });
 
     updater.on('update-downloading', (meta) => {

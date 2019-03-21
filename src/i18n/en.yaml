@@ -63,6 +63,9 @@ components:
 updater:
   title: "A new version has been found"
   message: "Would you like to install the new version"
+  updateAvailable: "Update available"
+  updateNotAvailable: "No update required"
+  errorUpdate: "Update error"
 form:
   errors:
     userTokenRequired: "Please enter your token"
