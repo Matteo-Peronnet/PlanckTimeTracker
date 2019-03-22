@@ -21,7 +21,7 @@ function init(store) {
 
     ipcRenderer.on('closeAppRequest', (event) => {
         // Close the Application if we don't need to save the timer
-        if (!isInTimerView(store.getState()) || newVersionFound) {
+        if (!isInTimerView(store.getState())) {
             ipcRenderer.send('closeApp')
         }
     });
