@@ -14,6 +14,9 @@ let newVersionFound = false;
 
 export const currentVersion = updater.version || '';
 
+
+export const forceUpdate = () => updater.checkForUpdates()
+
 function init(store) {
 
     ipcRenderer.on('closeAppRequest', (event) => {

@@ -21,6 +21,13 @@ class PlanckTray extends Tray {
 
         if (this.mainWindow.isVisible()) {
             this.mainWindow.hide();
+        } else if (process.platform === 'linux') {
+            this.mainWindow.setBounds({
+                height,
+                width,
+                center: true
+            });
+            this.mainWindow.show();
         } else {
             const yPosition = process.platform === 'darwin' ? y : y - height;
             this.mainWindow.setBounds({

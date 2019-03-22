@@ -60,6 +60,7 @@ components:
           en: "en"
       disconnect:
         title: "Disconnect"
+      update: "Update"
 updater:
   title: "A new version has been found"
   message: "Would you like to install the new version"

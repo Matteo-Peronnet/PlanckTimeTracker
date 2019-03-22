@@ -1,3 +1,4 @@
+const path = require('path')
 const electron = require('electron');
 const { BrowserWindow } = electron;
 
@@ -6,9 +7,10 @@ class MainWindow extends BrowserWindow {
         super({
             height: 500,
             width: 350,
-            frame: false,
+            frame: process.platform === 'linux',
             resizable: false,
             show: false,
+            icon: path.join(__dirname, '/../build/icon.png'),
             webPreferences: { backgroundThrottling: false }
         });
 
