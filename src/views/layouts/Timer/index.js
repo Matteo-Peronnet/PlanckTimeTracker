@@ -40,7 +40,8 @@ const confirm = Modal.confirm;
 @connect(
     (state) => ({
         timer: state.timer,
-        timeSpentTypes: Ov(state.planck.entities.timeSpentTypes)
+        timeSpentTypes: Ov(state.planck.entities.timeSpentTypes),
+        timeSpentLoading: state.planck.loading.timeSpent,
     }),
     dispatch => ({
     }),
@@ -276,7 +277,7 @@ class Timer extends React.Component {
 
     render() {
         const { display, timer, stepIndex } = this.state;
-        const { timeSpentTypes, form } = this.props;
+        const { timeSpentTypes, form, timeSpentLoading } = this.props;
         const styleStepsContent = {
             marginTop: "16px",
             border: "1px dashed #e9e9e9",
@@ -301,7 +302,7 @@ class Timer extends React.Component {
                     <Step title={<FormattedMessage id="pages.timer.tracker" />} />
                     <Step title={<FormattedMessage id="pages.timer.information" />} />
                 </Steps>
-                <TimerStep index={stepIndex} update={this.onStepChange} onSubmit={this.onSubmit}>
+                <TimerStep index={stepIndex} update={this.onStepChange} onSubmit={this.onSubmit} timeSpentLoading={timeSpentLoading}>
                     <div style={styleStepsContent}>
                         <Tracker
                             display={display || ''}

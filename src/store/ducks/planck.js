@@ -23,14 +23,15 @@ const GET_TIME_SPENT_TYPES_REQUEST = 'timeSpentType/GET_TIME_SPENT_TYPES_REQUEST
 const GET_TIME_SPENT_TYPES_FAILURE = 'timeSpentType/GET_TIME_SPENT_TYPES_FAILURE';
 const GET_TIME_SPENT_TYPES_SUCCESS = 'timeSpentType/GET_TIME_SPENT_TYPES_SUCCESS';
 
-const POST_TIME_SPENT_REQUEST = 'timeSpentType/POST_TIME_SPENT_REQUEST';
-const POST_TIME_SPENT_FAILURE = 'timeSpentType/POST_TIME_SPENT_FAILURE';
-const POST_TIME_SPENT_SUCCESS = 'timeSpentType/POST_TIME_SPENT_SUCCESS';
+const POST_TIME_SPENT_REQUEST = 'timeSpent/POST_TIME_SPENT_REQUEST';
+const POST_TIME_SPENT_FAILURE = 'timeSpent/POST_TIME_SPENT_FAILURE';
+const POST_TIME_SPENT_SUCCESS = 'timeSpent/POST_TIME_SPENT_SUCCESS';
+const POST_TIME_SPENT_END     = 'timeSpent/POST_TIME_SPENT_END';
 
-const ASSIGN_TASK_REQUEST = 'timeSpentType/ASSIGN_TASK_REQUEST';
-const ASSIGN_TASK_FAILURE = 'timeSpentType/ASSIGN_TASK_FAILURE';
-const ASSIGN_TASK_SUCCESS = 'timeSpentType/ASSIGN_TASK_SUCCESS';
-const ASSIGN_TASK_END = 'timeSpentType/ASSIGN_TASK_END';
+const ASSIGN_TASK_REQUEST = 'task/ASSIGN_TASK_REQUEST';
+const ASSIGN_TASK_FAILURE = 'task/ASSIGN_TASK_FAILURE';
+const ASSIGN_TASK_SUCCESS = 'task/ASSIGN_TASK_SUCCESS';
+const ASSIGN_TASK_END     = 'task/ASSIGN_TASK_END';
 
 
 // Initial state
@@ -47,6 +48,7 @@ const INITIAL_STATE = {
     },
     loading: {
         assignTask: false,
+        timeSpent: false
     }
 }
 
@@ -122,6 +124,22 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                     assignTask: false
                 }
             }
+        case POST_TIME_SPENT_REQUEST:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    timeSpent: true
+                }
+            }
+        case POST_TIME_SPENT_END:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    timeSpent: false
+                }
+            }
         default:
             return state
     }
@@ -184,7 +202,7 @@ export function assignTaskRequest(payload) {
 
 export function postTimeSpentRequest(payload) {
     return {
-        types: [POST_TIME_SPENT_REQUEST, POST_TIME_SPENT_SUCCESS, POST_TIME_SPENT_FAILURE],
+        types: [POST_TIME_SPENT_REQUEST, POST_TIME_SPENT_SUCCESS, POST_TIME_SPENT_FAILURE, POST_TIME_SPENT_END],
         promise: (getState, dispatch) => ajax(postTimeSpent(getState().user.token, payload)).pipe(
             map((res) => {
                 const { customerId, projectId, taskType, taskId } = payload.target;

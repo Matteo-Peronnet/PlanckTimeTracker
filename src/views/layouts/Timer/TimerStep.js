@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Button, message } from 'antd';
+import {Button, Spin} from 'antd';
 import {injectIntl, FormattedMessage} from "react-intl";
 
 @injectIntl
@@ -9,7 +9,8 @@ class TimerStep extends React.Component {
         children: PropTypes.arrayOf(PropTypes.element).isRequired,
         update: PropTypes.func.isRequired,
         onSubmit: PropTypes.func.isRequired,
-        index: PropTypes.number.isRequired
+        index: PropTypes.number.isRequired,
+        timeSpentLoading: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -35,7 +36,7 @@ class TimerStep extends React.Component {
     );
 
     render = () => {
-        const { index, children } = this.props;
+        const { index, children, timeSpentLoading } = this.props;
         return (
             <Fragment>
                 {
@@ -58,9 +59,11 @@ class TimerStep extends React.Component {
                     }
                     {
                         index === children.length - 1
-                        && <Button type="primary" onClick={() => this.onSubmit()}>
-                            <FormattedMessage id="pages.timer.steps.send"/>
-                        </Button>
+                        && <Spin spinning={timeSpentLoading}>
+                            <Button type="primary" onClick={() => this.onSubmit()}>
+                                <FormattedMessage id="pages.timer.steps.send"/>
+                            </Button>
+                        </Spin>
                     }
                 </div>
             </Fragment>
