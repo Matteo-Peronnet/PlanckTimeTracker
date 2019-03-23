@@ -6,8 +6,7 @@ import { map, mergeMap, catchError } from 'rxjs/operators'
 import { ofType, combineEpics } from 'redux-observable'
 import {login} from "../services/authentication";
 import { openNotificationByType } from '../../utils'
-import {ipcRenderer} from "electron";
-import {intl} from "../../i18n";
+import {intl, storage} from "../../i18n";
 import {resetTimer} from "./timer";
 
 export const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
@@ -82,11 +81,9 @@ export function loginFailure(payload) {
 }
 
 export const logoutRequest = () => dispatch => {
-    ipcRenderer.send('deleteToken');
-    ipcRenderer.on('deleteTokenResult', (event) => {
-        dispatch({ type: LOGOUT_SUCCESS });
-        dispatch(resetTimer());
-    });
+    storage.delete('token');
+    dispatch({ type: LOGOUT_SUCCESS });
+    dispatch(resetTimer());
 };
 
 export const epic = combineEpics(
@@ -123,7 +120,7 @@ export function loginSuccessEpic(action$, state$) {
     return action$.pipe(
         ofType(LOGIN_SUCCESS),
         mergeMap(() => {
-            ipcRenderer.send('setToken', state$.value.user.token)
+            storage.set('token', state$.value.user.token)
             return of(push('/'));
         })
     )

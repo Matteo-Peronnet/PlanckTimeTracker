@@ -88,21 +88,6 @@ ipcMain.on('closeApp', (event) => {
     app.quit();
 })
 
-ipcMain.on('getToken', (event, arg) => {
-    keytar.getPassword('PlanckTimeTracker', 'Planck').then((res) => {
-        event.sender.send('getTokenResult', res)
-    });
-});
-ipcMain.on('setToken', (event, arg) => {
-    keytar.setPassword('PlanckTimeTracker', 'Planck', arg).then(() => {
-        event.sender.send('setTokenResult');
-    });
-});
-ipcMain.on('deleteToken', (event, arg) => {
-    keytar.deletePassword('PlanckTimeTracker', 'Planck').then(() => {
-        event.sender.send('deleteTokenResult');
-    });
-});
 ipcMain.on('update-timer', (event, timeLeft) => {
     tray.setTitle(timeLeft);
 });

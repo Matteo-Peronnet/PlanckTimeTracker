@@ -1,6 +1,5 @@
 import {combineEpics, ofType} from "redux-observable";
 import {mergeMap} from "rxjs/operators";
-import {ipcRenderer} from "electron";
 import {of, NEVER} from "rxjs";
 import {replace} from "connected-react-router";
 import {storage} from "../../i18n";

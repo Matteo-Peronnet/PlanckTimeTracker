@@ -7,7 +7,6 @@ import Header from '../../../components/Header'
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
 import {asyncConnect} from "redux-connect";
-import {ipcRenderer} from "electron";
 import withUser from "../../../routes/withUser";
 import {storage} from "../../../i18n";
 
@@ -18,13 +17,12 @@ let firstAsyncConnect = false;
         promise: ({ store: { dispatch, getState } }) => {
             const promises = [];
             const { user, router: {location: {pathname}} } = getState();
-            ipcRenderer.send('getToken');
-            ipcRenderer.on('getTokenResult', (event, token) => {
-                if(!user.isLogged && token && !firstAsyncConnect) {
-                    firstAsyncConnect = true;
-                    promises.push(dispatch(loginRequest(token)))
-                }
-            });
+
+            if (!user.isLogged && storage.has('token') && !firstAsyncConnect) {
+                firstAsyncConnect = true;
+                promises.push(dispatch(loginRequest(storage.get('token'))))
+            }
+
             return Promise.all(promises).then(() => {
                 // Check if we have a timer that has been started previously and we are connected
                 if (pathname !== '/login' && storage.has('timer')) {
