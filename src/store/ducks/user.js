@@ -7,7 +7,7 @@ import { ofType, combineEpics } from 'redux-observable'
 import {login, getAccount, loginCheck} from "../services/authentication";
 import { openNotificationByType } from '../../utils'
 import {intl, storage} from "../../i18n";
-import {resetTimer} from "./timer";
+import {resetTimer, restoreTimerRequest} from "./timer";
 
 export const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
 export const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
@@ -198,6 +198,12 @@ export function loginSuccessEpic(action$, state$) {
     return action$.pipe(
         ofType(GET_ACCOUNT_SUCCESS),
         mergeMap(() => {
+
+            // Check if we have timer and redirect to timer
+            if (storage.has('timer')) {
+                return of(restoreTimerRequest(storage.get('timer')))
+            }
+
             return of(push('/'));
         })
     )

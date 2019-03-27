@@ -26,9 +26,11 @@ export default function reduxCasesMiddleware() {
                     console.error('MIDDLEWARE ERROR:', error);
                     next({ ...rest, error, type: FAILURE });
                 })
-                .finally(() =>
-                    next({type: END})
-                );
+                .finally(() => {
+                    if (END) {
+                        return next({type: END})
+                    }
+                });
         };
     };
 }

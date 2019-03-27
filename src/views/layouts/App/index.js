@@ -22,13 +22,6 @@ let firstAsyncConnect = false;
                 firstAsyncConnect = true;
                 promises.push(dispatch(loginCheckRequest(storage.get('refresh_token'))))
             }
-
-            return Promise.all(promises).then(() => {
-                // Check if we have a timer that has been started previously and we are connected
-                if (pathname !== '/login' && storage.has('timer')) {
-                    dispatch(restoreTimerRequest(storage.get('timer')))
-                }
-            });
         },
     },
 ])
