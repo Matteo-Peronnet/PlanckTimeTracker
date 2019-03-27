@@ -19,7 +19,7 @@ const middleware = composeWithDevTools(
 )
 
 // XHR request middlewares
-
+/*
 if (hooks.before) {
     xhook.before((request) => hooks.before(request, store.getState()))
 }
@@ -27,6 +27,7 @@ if (hooks.before) {
 if (hooks.after) {
     xhook.after((response) => hooks.after(response, store.getState()))
 }
+*/
 
 const store = createStore(reducer(history), middleware)
 

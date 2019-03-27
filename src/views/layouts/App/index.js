@@ -1,6 +1,6 @@
 import React, { Component }from 'react';
 import PropTypes from 'prop-types';
-import { loginRequest } from '../../../store/ducks/user';
+import { loginCheckRequest } from '../../../store/ducks/user';
 import { restoreTimerRequest } from '../../../store/ducks/timer';
 import { renderRoutes } from 'react-router-config';
 import Header from '../../../components/Header'
@@ -18,9 +18,9 @@ let firstAsyncConnect = false;
             const promises = [];
             const { user, router: {location: {pathname}} } = getState();
 
-            if (!user.isLogged && storage.has('token') && !firstAsyncConnect) {
+            if (!user.isLogged && storage.has('refresh_token') && !firstAsyncConnect) {
                 firstAsyncConnect = true;
-                promises.push(dispatch(loginRequest(storage.get('token'))))
+                promises.push(dispatch(loginCheckRequest(storage.get('refresh_token'))))
             }
 
             return Promise.all(promises).then(() => {

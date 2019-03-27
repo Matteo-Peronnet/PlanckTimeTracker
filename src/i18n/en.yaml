@@ -5,6 +5,9 @@ pages:
   login:
     title: "Connection"
     connexion: "Login"
+    form:
+      email: "Email"
+      password: "Mot de passe"
   project:
     tabs:
       sprints: "SPRINTS"
@@ -69,9 +72,10 @@ updater:
   errorUpdate: "Update error"
 form:
   errors:
-    userTokenRequired: "Please enter your token"
+    userEmailRequired: "Please enter your email"
+    userPasswordRequired: "Please enter your password"
     connectionError: "Connection failure"
-    invalidToken: "The token entered is invalid"
+    invalidEmailPassword: "Invalid email address or password"
     selectType: "Select a type"
     fillDescription: "Enter a description"
     selectDate: "Select a date"

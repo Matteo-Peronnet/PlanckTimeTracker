@@ -1,7 +1,8 @@
+import env from '../../../env.json'
 
 export function getProject(token, id) {
     return {
-        url: `http://planck.troopers.test/app_dev.php/api/timeTracker/project/${id}`,
+        url: `${env.PLANCK_HOST}/api/timeTracker/project/${id}`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',
@@ -12,7 +13,7 @@ export function getProject(token, id) {
 
 export function assignTask(token, payload) {
     return {
-        url: `http://planck.troopers.test/app_dev.php/api/timeTracker/task/${payload.taskId}/assign`,
+        url: `${env.PLANCK_HOST}/api/timeTracker/task/${payload.taskId}/assign`,
         method: 'POST',
         headers: {
             Accept: 'application/ld+json',

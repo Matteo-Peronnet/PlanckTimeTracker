@@ -1,7 +1,8 @@
+import env from '../../../env.json';
 
 export function getTimeSpentType(token) {
     return {
-        url: `http://planck.troopers.test/app_dev.php/api/timeTracker/timeSpentTypes`,
+        url: `${env.PLANCK_HOST}/api/timeTracker/timeSpentTypes`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',

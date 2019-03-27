@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Icon, Input, Button, Layout, Spin } from 'antd';
 import { loginRequest } from '../../../store/ducks/user';
 import {FormattedMessage, injectIntl} from 'react-intl'
+import {intl} from "../../../i18n";
 const { Content } = Layout;
 
 @connect(
@@ -10,7 +11,7 @@ const { Content } = Layout;
         user: state.user
     }),
     dispatch => ({
-        login: (token) =>  dispatch(loginRequest(token))
+        login: (email, password) =>  dispatch(loginRequest({email, password}))
     }),
 )
 @injectIntl
@@ -18,9 +19,9 @@ class Login extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err, {userToken}) => {
+        this.props.form.validateFields((err, {userEmail, userPassword}) => {
             if (!err) {
-                this.props.login(userToken);
+                this.props.login(userEmail, userPassword);
             }
         });
     }
@@ -39,10 +40,17 @@ class Login extends React.Component {
                             <div className="mt3">
                                 <Form onSubmit={this.handleSubmit}>
                                     <Form.Item>
-                                        {getFieldDecorator('userToken', {
-                                            rules: [{ required: true, message: <FormattedMessage id="form.errors.userTokenRequired" />}],
+                                        {getFieldDecorator('userEmail', {
+                                            rules: [{ required: true, message: <FormattedMessage id="form.errors.userEmailRequired" />}],
                                         })(
-                                            <Input prefix={<Icon type="key" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Token" />
+                                            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder={intl.formatMessage({ id: 'pages.login.form.email' })} />
+                                        )}
+                                    </Form.Item>
+                                    <Form.Item>
+                                        {getFieldDecorator('userPassword', {
+                                            rules: [{ required: true, message: <FormattedMessage id="form.errors.userPasswordRequired" />}],
+                                        })(
+                                            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder={intl.formatMessage({ id: 'pages.login.form.password' })} />
                                         )}
                                     </Form.Item>
                                     <Form.Item>
