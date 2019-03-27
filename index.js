@@ -7,7 +7,7 @@ const PlanckTray = require('./app/planckTray');
 const MainWindow = require('./app/mainWindow');
 const isDev = require('electron-is-dev');
 const Sentry = require('@sentry/electron')
-const { app, ipcMain } = electron;
+const { app, ipcMain, Menu } = electron;
 
 let mainWindow;
 let tray;
@@ -27,6 +27,28 @@ process.on('uncaughtException', (error) => {
 });
 
 app.on('ready', () => {
+
+    // Check if we are on a MAC
+    if (process.platform === 'darwin') {
+        // Create our menu entries so that we can use MAC shortcuts
+        Menu.setApplicationMenu(Menu.buildFromTemplate([
+            {
+                label: 'Edit',
+                submenu: [
+                    { role: 'undo' },
+                    { role: 'redo' },
+                    { type: 'separator' },
+                    { role: 'cut' },
+                    { role: 'copy' },
+                    { role: 'paste' },
+                    { role: 'pasteandmatchstyle' },
+                    { role: 'delete' },
+                    { role: 'selectall' }
+                ]
+            }
+        ]));
+    }
+
     require('./app/updater');
     if (process.platform === 'darwin') {
         app.dock.hide();
