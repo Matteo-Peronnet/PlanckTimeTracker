@@ -14,10 +14,12 @@ import {resetTimer} from "./timer";
 const GET_CUSTOMERS_REQUEST = 'customer/GET_CUSTOMERS_REQUEST';
 const GET_CUSTOMERS_FAILURE = 'customer/GET_CUSTOMERS_FAILURE';
 const GET_CUSTOMERS_SUCCESS = 'customer/GET_CUSTOMERS_SUCCESS';
+const GET_CUSTOMERS_END = 'customer/GET_CUSTOMERS_END';
 
 const GET_PROJECT_REQUEST = 'project/GET_PROJECT_REQUEST';
 const GET_PROJECT_FAILURE = 'project/GET_PROJECT_FAILURE';
 const GET_PROJECT_SUCCESS = 'project/GET_PROJECT_SUCCESS';
+const GET_PROJECT_END = 'project/GET_PROJECT_END';
 
 const GET_TIME_SPENT_TYPES_REQUEST = 'timeSpentType/GET_TIME_SPENT_TYPES_REQUEST';
 const GET_TIME_SPENT_TYPES_FAILURE = 'timeSpentType/GET_TIME_SPENT_TYPES_FAILURE';
@@ -48,7 +50,9 @@ const INITIAL_STATE = {
     },
     loading: {
         assignTask: false,
-        timeSpent: false
+        timeSpent: false,
+        customers: false,
+        projects: false
     }
 }
 
@@ -140,6 +144,38 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                     timeSpent: false
                 }
             }
+        case GET_CUSTOMERS_REQUEST:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    customers: true
+                }
+            }
+        case GET_CUSTOMERS_END:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    customers: false
+                }
+            }
+        case GET_PROJECT_REQUEST:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    projects: true
+                }
+            }
+        case GET_PROJECT_END:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    projects: false
+                }
+            }
         default:
             return state
     }
@@ -147,7 +183,7 @@ export function reducer(state = INITIAL_STATE, action = {}) {
 
 export function getCustomersRequest() {
     return {
-        types: [GET_CUSTOMERS_REQUEST, GET_CUSTOMERS_SUCCESS, GET_CUSTOMERS_FAILURE],
+        types: [GET_CUSTOMERS_REQUEST, GET_CUSTOMERS_SUCCESS, GET_CUSTOMERS_FAILURE, GET_CUSTOMERS_END],
         promise: (getState) => ajax(getCustomers()).pipe(
             map((res) => {
                 return normalize(res.response['hydra:member'], [customersSchema])
@@ -159,7 +195,7 @@ export function getCustomersRequest() {
 
 export function getProjectRequest(id) {
     return {
-        types: [GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE],
+        types: [GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE, GET_PROJECT_END],
         promise: (getState) => ajax(getProject(id)).pipe(
             map((res) =>
                 normalize({

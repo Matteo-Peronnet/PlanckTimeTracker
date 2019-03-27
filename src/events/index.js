@@ -6,8 +6,11 @@ import { Modal } from 'antd';
 import isDev from 'electron-is-dev';
 import { message } from 'antd';
 import log from 'electron-log';
+import { matchRoutes } from "react-router-config";
 import * as Sentry from '@sentry/browser';
-
+import routes from '../routes/routes';
+import store from '../store'
+import {getCustomersRequest, getProjectRequest} from "../store/ducks/planck";
 const updater = remote.require('electron-simple-updater');
 const confirm = Modal.confirm;
 let newVersionFound = false;
@@ -17,7 +20,7 @@ export const currentVersion = updater.version || '';
 
 export const forceUpdate = () => updater.checkForUpdates()
 
-function init(store) {
+function init() {
 
     ipcRenderer.on('closeAppRequest', (event) => {
         // Close the Application if we don't need to save the timer
@@ -79,4 +82,15 @@ function init(store) {
 
 export default init;
 
+export const refreshCurrentRoute = () => {
+    const { match } = matchRoutes(routes, store.getState().router.location.pathname)[1];
 
+    switch (match.path) {
+        case '/': store.dispatch(getCustomersRequest()); break;
+        case '/customer/:customerId/project/:projectId/task/:taskType/:taskId':
+        case '/customer/:customerId/project/:projectId': store.dispatch(getProjectRequest(match.params.projectId)); break;
+
+        default: return;
+    }
+
+}

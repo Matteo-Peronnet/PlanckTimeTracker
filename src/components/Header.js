@@ -1,22 +1,23 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import logo from '../assets/planck_header_logo.png';
 import connect from "react-redux/es/connect/connect";
-import { Icon, Menu, Dropdown } from 'antd';
+import {Icon, Menu, Dropdown, Button, Spin} from 'antd';
 import withUser from "../routes/withUser";
 import Avatar from "./Avatar";
 import * as userActions from '../store/ducks/user';
 import * as intlActions from '../store/ducks/intl';
 import { injectIntl, FormattedMessage } from 'react-intl'
-import {currentVersion, forceUpdate} from "../events";
+import {currentVersion, forceUpdate, refreshCurrentRoute} from "../events";
 
 const SubMenu = Menu.SubMenu;
 
 @connect(
     state => ({
         user: state.user,
-        intl: state.intl
+        intl: state.intl,
+        loadingRequest: state.planck.loading
     }),
     ({...userActions, ...intlActions})
 )
@@ -43,8 +44,7 @@ export default class Header extends Component {
     );
 
     render() {
-
-        const { user } = this.props
+        const { user, loadingRequest } = this.props
 
         return (
             <header className="w-100 ph3 pv3 pv4-ns ph4-m ph5-l" style={{backgroundColor: '#3d324c'}}>
@@ -57,11 +57,20 @@ export default class Header extends Component {
                     </Link>
                     {
                         user.isLogged && (
-                        <Dropdown overlay={this.renderMenu}>
-                            <a className="ant-dropdown-link">
-                                <Avatar userId={user.id}/>
-                            </a>
-                        </Dropdown>
+                            <Fragment>
+                                <Button
+                                    shape="circle"
+                                    icon="redo"
+                                    loading={loadingRequest.customers || loadingRequest.projects}
+                                    disabled={loadingRequest.customers || loadingRequest.projects}
+                                    onClick={() => refreshCurrentRoute()}
+                                />
+                                <Dropdown overlay={this.renderMenu}>
+                                    <a className="ant-dropdown-link">
+                                        <Avatar userId={user.id}/>
+                                    </a>
+                                </Dropdown>
+                            </Fragment>
                         )
                     }
                 </nav>

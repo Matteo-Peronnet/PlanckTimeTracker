@@ -20,7 +20,7 @@ if (!isDev) {
     });
 }
 
-events(store)
+events()
 
 ReactDOM.render(
     <ReduxProvider store={store}>
