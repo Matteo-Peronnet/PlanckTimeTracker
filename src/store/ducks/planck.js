@@ -148,8 +148,10 @@ export function reducer(state = INITIAL_STATE, action = {}) {
 export function getCustomersRequest() {
     return {
         types: [GET_CUSTOMERS_REQUEST, GET_CUSTOMERS_SUCCESS, GET_CUSTOMERS_FAILURE],
-        promise: (getState) => ajax(getCustomers(getState().user.token)).pipe(
-            map((res) => normalize(res.response, [customersSchema])),
+        promise: (getState) => ajax(getCustomers()).pipe(
+            map((res) => {
+                return normalize(res.response['hydra:member'], [customersSchema])
+            }),
             catchError((error) => Promise.reject(error)),
         ).toPromise()
     }
@@ -158,7 +160,7 @@ export function getCustomersRequest() {
 export function getProjectRequest(id) {
     return {
         types: [GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE],
-        promise: (getState) => ajax(getProject(getState().user.token,id)).pipe(
+        promise: (getState) => ajax(getProject(id)).pipe(
             map((res) =>
                 normalize({
                     project: {
@@ -175,9 +177,9 @@ export function getProjectRequest(id) {
 export function getTimeSpentTypesRequest() {
     return {
         types: [GET_TIME_SPENT_TYPES_REQUEST, GET_TIME_SPENT_TYPES_SUCCESS, GET_TIME_SPENT_TYPES_FAILURE],
-        promise: (getState) => ajax(getTimeSpentType(getState().user.token)).pipe(
+        promise: (getState) => ajax(getTimeSpentType()).pipe(
             map((res) =>
-                normalize(res.response, [timeSpentTypeSchema])
+                normalize(res.response['hydra:member'], [timeSpentTypeSchema])
             ),
             catchError((error) => Promise.reject(error)),
         ).toPromise()
@@ -187,7 +189,7 @@ export function getTimeSpentTypesRequest() {
 export function assignTaskRequest(payload) {
     return {
         types: [ASSIGN_TASK_REQUEST, ASSIGN_TASK_SUCCESS, ASSIGN_TASK_FAILURE, ASSIGN_TASK_END],
-        promise: (getState) => ajax(assignTask(getState().user.token, payload)).pipe(
+        promise: (getState) => ajax(assignTask(payload)).pipe(
             map((res) =>
                 ({
                     ...res.response,

@@ -1,4 +1,3 @@
-import env from '../../../env.json'
 
 export function login(payload) {
     console.log(payload)
@@ -9,7 +8,7 @@ export function login(payload) {
 
     return {
         method: 'POST',
-        url: `${env.PLANCK_HOST}/api/login_check`,
+        url: `/api/login_check`,
         headers: {
             'Content-Type': "application/json"
         },
@@ -18,7 +17,6 @@ export function login(payload) {
 }
 
 export function loginCheck(refreshToken) {
-    console.log(refreshToken)
 
     let data = {
         refresh_token: refreshToken
@@ -26,7 +24,7 @@ export function loginCheck(refreshToken) {
 
     return {
         method: 'POST',
-        url: `${env.PLANCK_HOST}/api/token/refresh`,
+        url: `/api/token/refresh`,
         headers: {
             'Content-Type': "application/json"
         },
@@ -38,7 +36,7 @@ export function loginCheck(refreshToken) {
 export function getAccount(token) {
 
     return {
-        url: `${env.PLANCK_HOST}/api/users/me`,
+        url: `/api/users/me`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',

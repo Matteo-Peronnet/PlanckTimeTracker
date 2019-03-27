@@ -1,4 +1,3 @@
-import env from '../../../env.json'
 
 export function postTimeSpent(token, payload) {
 
@@ -12,11 +11,11 @@ export function postTimeSpent(token, payload) {
     }
 
     return {
-        url: `${env.PLANCK_HOST}/api/timeTracker/timeSpent/${projectId}/${taskId}/new`,
+        url: `/api/timeSpent/${projectId}/${taskId}/new`,
         method: 'POST',
         headers: {
             Accept: 'application/ld+json',
-            'X-TIME-TRACKER-TOKEN': token
+            Authorization: null
         },
         body: JSON.stringify(data)
     }

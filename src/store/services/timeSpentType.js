@@ -1,12 +1,11 @@
-import env from '../../../env.json';
 
 export function getTimeSpentType(token) {
     return {
-        url: `${env.PLANCK_HOST}/api/timeTracker/timeSpentTypes`,
+        url: `/api/time_spent_types`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',
-            'X-TIME-TRACKER-TOKEN': token
+            Authorization: null
         },
     }
 }

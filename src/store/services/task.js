@@ -1,23 +1,22 @@
-import env from '../../../env.json'
 
-export function getProject(token, id) {
+export function getProject(id) {
     return {
-        url: `${env.PLANCK_HOST}/api/timeTracker/project/${id}`,
+        url: `/api/project/${id}/tasks`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',
-            'X-TIME-TRACKER-TOKEN': token
+            Authorization: null
         },
     }
 }
 
-export function assignTask(token, payload) {
+export function assignTask(payload) {
     return {
-        url: `${env.PLANCK_HOST}/api/timeTracker/task/${payload.taskId}/assign`,
+        url: `/api/task/${payload.taskId}/assign`,
         method: 'POST',
         headers: {
             Accept: 'application/ld+json',
-            'X-TIME-TRACKER-TOKEN': token
+            Authorization: null
         },
     }
 }

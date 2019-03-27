@@ -1,12 +1,11 @@
-import env from '../../../env.json'
 
-export function getCustomers(token) {
+export function getCustomers() {
     return {
-        url: `${env.PLANCK_HOST}/api/timeTracker/customers`,
+        url: `/api/customers?withProject=true`,
         method: 'GET',
         headers: {
             Accept: 'application/ld+json',
-            'X-TIME-TRACKER-TOKEN': token
+            Authorization: null
         },
     }
 }

@@ -36,7 +36,6 @@ const INITIAL_STATE = {
 
 // Reducer
 export function reducer(state = INITIAL_STATE, action = {}) {
-    console.log(action)
     switch (action.type) {
         case LOGIN_CHECK_REQUEST:
         case LOGIN_REQUEST:
@@ -173,9 +172,9 @@ export function loginCheckRequestEpic(action$) {
             ).pipe(
                 map((res) => {
                     storage.set('refresh_token', res.response.refresh_token)
-                    return getAccountRequest(res.response.token);
+                    return getAccountRequest(res.response.token)
                 }),
-                catchError((err) => of(loginFailure(err))),
+                catchError((err) => of(loginCheckFailure(err))),
             ),
         ),
     )
