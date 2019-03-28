@@ -28,8 +28,8 @@ process.on('uncaughtException', (error) => {
 
 app.on('ready', () => {
 
-    // Check if we are on a MAC
-    if (process.platform === 'darwin') {
+    // Check if we are on a MAC and not in Dev mode
+    if (process.platform === 'darwin' && !isDev) {
         // Create our menu entries so that we can use MAC shortcuts
         Menu.setApplicationMenu(Menu.buildFromTemplate([
             {
@@ -64,7 +64,15 @@ app.on('ready', () => {
     }
     mainWindow = new MainWindow(`file://${__dirname}/src/index.html`);
 
-    const iconName = process.platform === 'win32' ? 'windows-icon.png' : 'default-icon.png';
+    let iconName;
+    if (process.platform === 'win32') {
+        iconName = 'windows-icon.png';
+    } else if (process.platform === 'darwin') {
+        iconName = electron.systemPreferences.isDarkMode() ? 'default-icon-light.png' : 'default-icon-dark.png';
+    } else {
+        iconName = 'default-icon-light.png';
+    }
+
     const iconPath = path.join(__dirname, `src/assets/${iconName}`);
     tray = new PlanckTray(iconPath, mainWindow);
 

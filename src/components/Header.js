@@ -17,7 +17,8 @@ const SubMenu = Menu.SubMenu;
     state => ({
         user: state.user,
         intl: state.intl,
-        loadingRequest: state.planck.loading
+        loadingRequest: state.planck.loading,
+        pathname: state.router.location.pathname
     }),
     ({...userActions, ...intlActions})
 )
@@ -44,13 +45,15 @@ export default class Header extends Component {
     );
 
     render() {
-        const { user, loadingRequest } = this.props
+        const { user, loadingRequest, pathname } = this.props
+
+        const linkActive = pathname !== '/timer'
 
         return (
             <header className="w-100 ph3 pv3 pv4-ns ph4-m ph5-l" style={{backgroundColor: '#3d324c'}}>
                 <nav className="flex items-center justify-between">
                     <Link
-                        to="/"
+                        to={linkActive ? "/" : '#'}
                         style={{ cursor: "pointer" }}
                     >
                         <img src={logo} alt="Planck" height={40} />
@@ -61,8 +64,8 @@ export default class Header extends Component {
                                 <Button
                                     shape="circle"
                                     icon="redo"
-                                    loading={loadingRequest.customers || loadingRequest.projects}
-                                    disabled={loadingRequest.customers || loadingRequest.projects}
+                                    loading={loadingRequest.customers || loadingRequest.projects }
+                                    disabled={loadingRequest.customers || loadingRequest.projects || !linkActive}
                                     onClick={() => refreshCurrentRoute()}
                                 />
                                 <Dropdown overlay={this.renderMenu}>
