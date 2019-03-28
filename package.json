@@ -12,6 +12,7 @@
   "url": "https://troopers.agency/",
   "main": "index.js",
   "scripts": {
+    "preelectron": "cp env.dev.json env.json",
     "electron": "NODE_ENV=development electron .",
     "rebuild": "electron-builder install-app-deps",
     "prod": "NODE_ENV=production webpack --config webpack.build.config.js && electron --noDevServer .",
@@ -23,6 +24,7 @@
     "publish:minor": "versiony package.json --minor",
     "publish:major": "versiony package.json --major",
     "publish:list": "publish list",
+    "prepublish": "cp env.prod.json env.json",
     "publish": "npm run pack && publish all"
   },
   "updater": {

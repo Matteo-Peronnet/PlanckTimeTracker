@@ -53,6 +53,7 @@ export function reducer(state = INITIAL_STATE, action = {}) {
                 isLogged: true,
                 loading: false
             }
+        case LOGIN_CHECK_FAILURE:
         case GET_ACCOUNT_FAILURE:
         case LOGIN_FAILURE: {
             return {

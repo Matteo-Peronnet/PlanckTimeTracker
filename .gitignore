@@ -9,3 +9,5 @@ publisher.json
 build/all-certs.p12
 build/entitlements.mac.plist
 embedded.provisionprofile
+env.json
+env.prod.json
