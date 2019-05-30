@@ -91,7 +91,7 @@
     "@sentry/electron": "^0.17.0",
     "antd": "^3.13.6",
     "babel-core": "^6.24.0",
-    "babel-loader": "^6.4.1",
+    "babel-loader": "^7.1.5",
     "babel-preset-es2015": "^6.24.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
