@@ -79,7 +79,7 @@
     "electron-builder": "^20.39.0",
     "electron-builder-squirrel-windows": "^19.42.0",
     "electron-packager": "^13.1.1",
-    "electron-rebuild": "^1.8.4",
+    "electron-rebuild": "^1.11.0",
     "electron-simple-publisher": "^0.6.2",
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
