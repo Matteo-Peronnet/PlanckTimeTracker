@@ -1,0 +1,32 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: electron-log
+    versions:
+    - 4.3.1
+    - 4.3.2
+    - 4.3.3
+  - dependency-name: electron-store
+    versions:
+    - 7.0.0
+    - 7.0.1
+    - 7.0.2
+    - 7.0.3
+  - dependency-name: electron-rebuild
+    versions:
+    - 2.3.4
+  - dependency-name: electron-builder
+    versions:
+    - 22.9.1
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
